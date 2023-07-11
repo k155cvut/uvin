@@ -1,2 +1,1 @@
-# uvin
-155UVIN Úvod do informatiky
+# 155UVIN Úvod do informatiky
