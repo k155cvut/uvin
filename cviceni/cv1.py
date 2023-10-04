@@ -40,18 +40,18 @@ y = sin(x)
 y = Sin(x) #Error, case sensitive
 
 #Square
-a= 10
+a = 10
 S = a * a
 O = 4 * a
 print(S + O) #Error
 print(S, O)
-print('Square area: ', S, ' Square length: ', O)
+print('Square area: 'm2, S, ' Square length: ', O, 'm')
 
 #Circle
 r = 10
 S = pi * r * r
 O = 2 * pi * r
-print('Circle area: ', S, ' circle length: ', O)
+print('Circle area: ', S, 'm2, circle length: ', O, 'm')
 
 #Simple operation with the input
 name = input('name:')
