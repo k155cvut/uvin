@@ -19,11 +19,12 @@ Hello
 63//8
 3**2
 3**(-2)
--3**2      #Error, priority
-(-3)**2    #Complex number support
+-3**1/2        #Error, priority
+(-3)**(1/2)    #Complex number support
+(-3)**(0.5)
 3/0
 2**64
-2**128     #Large numbe support
+2**128         #Large numbe support
 
 #Simple equations
 x = 2
