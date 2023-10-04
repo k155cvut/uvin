@@ -1,3 +1,3 @@
 # 155UVIN Úvod do informatiky
 
-https://geo.fsv.cvut.cz/gwiki/k155uvin
+https://geo.fsv.cvut.cz/gwiki/155UVIN
