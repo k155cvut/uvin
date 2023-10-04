@@ -61,7 +61,7 @@ print('You are:' + name + surname)
 r = input('Radius: ', r)
 # and continue with circle example
 
-#Convert do real number
+#Convert to real number
 D = 5
 M = 26
 S = 43
