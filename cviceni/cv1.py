@@ -45,7 +45,7 @@ S = a * a
 O = 4 * a
 print(S + O) #Error
 print(S, O)
-print('Square area: 'm2, S, ' Square length: ', O, 'm')
+print('Square area: ', S, 'm2, square length: ', O, 'm')
 
 #Circle
 r = 10
@@ -67,3 +67,4 @@ D = 5
 M = 26
 S = 43
 R =  D + M/60 + S/3600
+print(R)
