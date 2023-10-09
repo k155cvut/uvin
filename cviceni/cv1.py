@@ -26,6 +26,23 @@ Hello
 2**64
 2**128         #Large numbe support
 
+%Types
+a = 1
+type(a)
+b = 2
+type(b)
+z = a / b
+b = float(b)
+type(b)
+z = a / b
+type(z)
+c = 3.0
+z = a / c
+type(z)
+zi = int(z)
+type(zi)
+
+
 #Simple equations
 x = 2
 y = X**2   #Error, case sensitive
