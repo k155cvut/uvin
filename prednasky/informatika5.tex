@@ -1,0 +1,610 @@
+\documentclass[czech]{beamer}
+\usepackage{helvet}
+\renewcommand{\ttdefault}{lmtt}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amstext}
+\usepackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage{undertilde}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+\newenvironment{lyxcode}
+  {\par\begin{list}{}{
+    \setlength{\rightmargin}{\leftmargin}
+    \setlength{\listparindent}{0pt}% needed for AMS classes
+    \raggedright
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \normalfont\ttfamily}%
+   \def\{{\char`\{}
+   \def\}{\char`\}}
+   \def\textasciitilde{\char`\~}
+   \item[]}
+  {\end{list}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\date{}
+\beamertemplateshadingbackground{red!5}{structure!5}
+
+\usepackage{beamerthemecambridgeus}
+\usepackage{pgfnodes,pgfarrows,pgfheaps}
+\usepackage {multicol}
+
+\beamertemplatetransparentcovereddynamicmedium
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+\title{Cykly.}
+\subtitle{Cyklus for. Cyklus while. Break. Continue.}
+\author{Tomáš Bayer | bayertom@fsv.cvut.cz}
+\institute{Katedra geomatiky, fakulta stavební ČVUT.}
+\makebeamertitle
+\begin{frame}{Obsah přednášky}
+
+\tableofcontents{}
+\end{frame}
+
+\section{Cykly}
+\begin{frame}{1. Příkazy pro opakování}
+
+Příkazy pro opakování nazývány iteračními příkazy.
+
+Umožňují provádět příkaz/blok za splnění podmínky.\bigskip{}
+
+V praxi nejčastěji realizovány prostřednictvím cyklů.
+
+Vykytují se ve většině programovacích jazycích.\bigskip{}
+
+Alternativou k cyklům rekurze.
+
+\bigskip{}
+
+\textbf{\textcolor{brown}{Řídící podmínka cyklu:}}
+
+Představována booleovským výrazem.
+
+Vyhodnocení: hodnota \texttt{true} nebo \texttt{false}.
+
+\bigskip{}
+Opakování prováděno v těle cyklu (blok, příkaz).\bigskip{}
+
+Dle vstupní podmínky cykly děleny:
+\begin{itemize}
+\item s předem neznámým počtem opakování: \texttt{while},
+\item s předem známým počtem opakování: \texttt{for}, \texttt{for-each},
+\item s neznámým počtem opakování, alespoň 1x proběhne: \texttt{do while}.
+\end{itemize}
+\end{frame}
+
+
+\section{Cyklus while}
+\begin{frame}[plain]{2. Cyklus while}
+
+{\scriptsize Používán, pokud počet opakování není předem znám.}{\scriptsize\par}
+
+{\scriptsize Vyhodnocení řídící podmínky }{\scriptsize\emph{před}}{\scriptsize{}
+průchodem cyklu. \bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize Pokud nesplněna, tělo cyklu neproběhne. \bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize Dokud splněna, opakovaně prováděno tělo cyklu.\medskip{}
+}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize while~vyraz:~~~~~~~~~\#~Ridici~podminka~cyklu}{\scriptsize\par}
+
+{\scriptsize ~~~telo~cyklu~~~~~~~~\#~Pokud~rici~podminka~true}{\scriptsize\par}
+
+{\scriptsize else:}{\scriptsize\par}
+
+{\scriptsize ~~~telo~podminky~~~~~\#~Ridici~podminka~false}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize\medskip{}
+V Pythonu specifická syntaxe, blok }{\scriptsize\texttt{else}}{\scriptsize :
+pokud řídící podmínka }{\scriptsize\texttt{false}}{\scriptsize .}{\scriptsize\par}
+
+{\scriptsize Ve většině jazyků podobná konstrukce chybí.\bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize\textbf{\textcolor{brown}{Vnořený cyklus:}}}{\scriptsize\par}
+
+{\scriptsize V těle cyklu další cyklus}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize while~vyraz:~~~~~~~~~\#~Ridici~podminka~cyklu}{\scriptsize\par}
+
+{\scriptsize ~~~while~vyraz:~}{\scriptsize\par}
+
+{\scriptsize ~~~~~~telo~cyklu}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize\textbf{\textcolor{brown}{Nekonečný~cyklus:}}}{\scriptsize\par}
+
+{\scriptsize V těle cyklu nutno modifikovat řídící proměnnou, jinak
+nekonečný cyklus.}{\scriptsize\par}
+
+{\scriptsize Pozor na tautologie a kontradikce!}{\scriptsize\par}
+\end{frame}
+
+\begin{frame}{3. Ukázka cyklu while: faktoriál}
+
+Definice faktoriálu
+\[
+n!=\begin{cases}
+n(n-1)!, & \mbox{pro }n>1,\\
+1, & \mbox{pro }n=1.
+\end{cases}
+\]
+Ukázka řešení v jazyce Python:
+\begin{lyxcode}
+n~=~10~~~~~~~~~~\#Initialize~n
+
+f~=~1~~~~~~~~~~~\#Initialize~factorial
+
+while~n~>~1:~~~~\#Repeat,~while~n~>~1~
+
+~~~~~f~{*}=~n~~~~~\#Actualize~factorial
+
+~~~~~n~-=~1~~~~~\#Decrement~n
+
+print(f);~~~~~~~\#Print~result,~factorial.
+
+~
+
+>\textcompwordmark >\textcompwordmark >~3628800
+
+~
+\end{lyxcode}
+\end{frame}
+
+
+\section{Cyklus for}
+\begin{frame}[plain]{4. Cyklus for}
+
+{\scriptsize Používán, pokud je znám počet opakování.}{\scriptsize\par}
+
+{\scriptsize\bigskip{}
+Vyhodnocení řídící podmínky před každým provedením těla cyklu.}{\scriptsize\par}
+
+{\scriptsize Tělo se prováděno dokud je pravdivá.}{\scriptsize\par}
+
+{\scriptsize Pokud není pravdivý, skok do }{\scriptsize\texttt{else}}{\scriptsize{}
+bloku.\bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize Syntaxe v Pythonu odlišná od jiných programovacích jazyků
+(}{\scriptsize\texttt{foreach}}{\scriptsize{} cyklus)}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize for~prvek~in~iterovatelny~objekt:~~}{\scriptsize\par}
+
+{\scriptsize ~~~~~~telo\_cyklu}{\scriptsize\par}
+
+{\scriptsize else:}{\scriptsize\par}
+
+{\scriptsize ~~~telo~podminky;}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Iterace nad prvky datových struktury: {[}{]}, \{\}, ()
+či intervalem.}{\scriptsize\par}
+
+{\scriptsize\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize\textbf{\textcolor{brown}{Iterovatelný objekt:}}}{\scriptsize\par}
+
+{\scriptsize Objekt (dynamická datová struktura), můžeme přistupovat
+k jeho prvkům.}{\scriptsize\par}
+
+{\scriptsize Sekvenční procházení jeho prvků, přímý přístup.\bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize Alternativně procházení prvků v nějakém intervalu, příkaz
+}{\scriptsize\texttt{range}}{\scriptsize ().\bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize\textbf{\textcolor{brown}{Vnořený cyklus:}}}{\scriptsize\par}
+
+{\scriptsize V těle cyklu další cyklus}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize for~prvek~in~in~iterovatelny~objekt:~~~~~~~~~\#~Ridici~podminka~cyklu}{\scriptsize\par}
+
+{\scriptsize ~~~for~prvek~in~in~iterovatelny~objekt:~}{\scriptsize\par}
+
+{\scriptsize ~~~~~~telo~cyklu}{\scriptsize\par}
+\end{lyxcode}
+\end{frame}
+
+\begin{frame}[plain]{5. For v jiných programovacích jazycích}
+
+{\footnotesize V jazycích C/C++/Java/C\# trochu jiná funkcionalita.}{\footnotesize\par}
+
+{\footnotesize Chybí }{\footnotesize\texttt{else}}{\footnotesize{} blok.\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Obecná syntaxe:}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize for~(inicializacni\_vyraz;~testovaci\_vyraz;~zmenovy\_vyraz)}{\footnotesize\par}
+
+{\footnotesize\{}{\footnotesize\par}
+
+{\footnotesize ~~~~~~telo\_cyklu}{\footnotesize\par}
+
+{\footnotesize\}}{\footnotesize\par}
+\end{lyxcode}
+{\footnotesize\textbf{\textcolor{brown}{Inicializační~výraz:}}}{\footnotesize\par}
+
+{\footnotesize Je vykonán 1x před vyhodnocením testovacího výrazu\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textbf{\textcolor{brown}{Testovací~výraz: }}}{\footnotesize\par}
+
+{\footnotesize Určuje, zda se má provést tělo cyklu.}{\footnotesize\par}
+
+{\footnotesize Prováděno, dokud hodnota testovacího výrazu }{\footnotesize\texttt{true}}{\footnotesize .
+\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textbf{\textcolor{brown}{Změnový~výraz:}}}{\footnotesize\par}
+
+{\footnotesize Vyhodnocen na konci cyklu po vykonání těla cyklu.}{\footnotesize\par}
+
+{\footnotesize Použit pro změnu hodnoty testovacího výrazu.\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize Ukázka:}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize for}~(int~i~=~0;~i~<~n;~i++)
+\end{lyxcode}
+\end{frame}
+
+\begin{frame}[plain]{6. Ukázka cyklu for: hledání maxima, minima}
+
+{\scriptsize Vstup $X=\{x_{i}\}_{i=1}^{n}.$}{\scriptsize\par}
+
+{\scriptsize Hledáme
+\[
+\underline{x}=\min_{x_{i}\in X}(x_{i}),\qquad\overline{x}=\max_{x_{i}\in X}(x_{i}).
+\]
+Inicializace odhadů $\utilde{x}=x_{1}$, $\widetilde{x}=x_{1}$ prvním
+prvkem, alternativně $\utilde{x}=\infty$, $\widetilde{x}=-\infty$.}{\scriptsize\par}
+
+{\scriptsize Postupné porovnání $\utilde{x}$, $\widetilde{x}$ s $x_{i}$
+\[
+\utilde{x}=\min(\utilde{x},x_{i}),\qquad\widetilde{x}=\max(\widetilde{x},x_{i}).
+\]
+Pro průchodu celou posloupností 
+\[
+\underline{x}=\utilde{x},\qquad\overline{x}=\widetilde{x}.
+\]
+Ukázka řešení v jazyce Python:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize X~=~{[}10,~-27,~3,~48,~0,~95{]}~~~~~~~~~~~~~~\#Create~list}{\scriptsize\par}
+
+{\scriptsize xmin~=~X{[}0{]}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\#Initialize~minimum}{\scriptsize\par}
+
+{\scriptsize xmax~=~X{[}0{]}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\#Initialize~maximum}{\scriptsize\par}
+
+{\scriptsize for~x~in~X:~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\#Repeat~for~$\forall x\in X$}{\scriptsize\par}
+
+{\scriptsize ~~~~if~x~<~xmin:~~~~~~~~~~~~~~~~~~~~~~~~~\#Compare~x{[}i{]}~to~xmin}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~xmin~=~x~~~~~~~~~~~~~~~~~~~~~~~~~\#Actualize~xmin}{\scriptsize\par}
+
+{\scriptsize ~~~~if~x~>~xmax:~~~~~~~~~~~~~~~~~~~~~~~~~\#Compare~x{[}i{]}~to~xmax}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~xmax~=~x~~~~~~~~~~~~~~~~~~~~~~~~~\#Actualize~xmax~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}{\scriptsize\par}
+
+{\scriptsize print(xmax)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\#Print~results}{\scriptsize\par}
+
+{\scriptsize print(xmim)~~}{\scriptsize\par}
+
+{\scriptsize >\textcompwordmark >\textcompwordmark >~95,~}{\scriptsize\par}
+
+{\scriptsize >\textcompwordmark >\textcompwordmark >~-27}{\scriptsize\par}
+\end{lyxcode}
+\end{frame}
+
+\begin{frame}[plain]{7. Ukázka cyklu for: bankomat }
+
+{\tiny Vstup: částka $c$, $c\in\mathbb{N}$.}{\tiny\par}
+
+{\tiny Výstup: vyplacení co nejmenším počtem bankovek/mincí
+\[
+B=\{1,2,5,...,2000,5000\}.
+\]
+Použití celočíselného dělení $\sslash$ a operace $\pmod{}$.}{\tiny\par}
+
+{\tiny Počet bankovek
+\[
+n=c\sslash b.
+\]
+Zbytek částky k vyplacení
+\[
+c\equiv c\pmod b=c-nb.
+\]
+Postupně opakujeme poslední dva kroky.\medskip{}
+}{\tiny\par}
+
+{\tiny Ukázka řešení v jazyce Python:}{\tiny\par}
+\begin{lyxcode}
+{\tiny B={[}5000,2000,1000,500,200,100,50,20,10,5,2,1{]}~~}{\tiny\par}
+
+{\tiny c~=~int(input(\textquotedbl Zadej~castku:~\textquotedbl ))}{\tiny\par}
+
+{\tiny for~b~in~B:~~~~~~~~~~~~~~~~~~~~~~~~~~~~\#Opakuj~pro~kazdou~bankovku/minci}{\tiny\par}
+
+{\tiny ~~~~n~=~c~//~b~~~~~~~~~~~~~~~~~~~~~~~~~\#Urci~pocet~bankovek}{\tiny\par}
+
+{\tiny ~~~~c~=~c\%b~~~~~~~~~~~~~~~~~~~~~~~~~~~~\#Zbytkova~castka:~c~=~c~-~n~{*}~b~}{\tiny\par}
+
+{\tiny ~~~~if~c~>~0:~~~~~~~~~~~~~~~~~~~~~~~~~~\#Pokud~jeste~neco~zbyva}{\tiny\par}
+
+{\tiny ~~~~~~~~print(str(n)~+~\textquotedbl ~x~\textquotedbl ~+~str(b))~\#Vytiskni~pocet~bankovek}{\tiny\par}
+
+{\tiny .}{\tiny\par}
+
+{\tiny >\textcompwordmark >\textcompwordmark >~Zadej~castku:~2345}{\tiny\par}
+
+{\tiny >\textcompwordmark >\textcompwordmark >~1~x~2000}{\tiny\par}
+
+{\tiny >\textcompwordmark >\textcompwordmark >~1~x~200}{\tiny\par}
+
+{\tiny >\textcompwordmark >\textcompwordmark >~1~x~100}{\tiny\par}
+
+{\tiny >\textcompwordmark >\textcompwordmark >~2~x~20}{\tiny\par}
+
+{\tiny >\textcompwordmark >\textcompwordmark >~1~x~5}{\tiny\par}
+\end{lyxcode}
+\end{frame}
+
+\begin{frame}[plain]{8. List/Set/Dir comprehension}
+
+{\footnotesize Využití }{\footnotesize\texttt{for}}{\footnotesize{} při
+konstrukci nových dynamických struktur z existujících.}{\footnotesize\par}
+
+{\footnotesize Speciální (úspornější) notace, umožňuje efektivní konstrukci.}{\footnotesize\par}
+
+{\footnotesize Změnový výraz představuje libovolný Pythonovský výraz.\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textbf{List comprehension:}}{\footnotesize\par}
+
+{\footnotesize Vytvoření nového seznamu z existujícího (nemění se).}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize L~={[}1,~2,~3,~4,~5{]}}{\footnotesize\par}
+
+{\footnotesize L2~=~{[}10~{*}~l~for~l~in~L{]}}{\footnotesize\par}
+
+{\footnotesize >\textcompwordmark >\textcompwordmark >~{[}10,~20,~30,~40,~50{]}}{\footnotesize\par}
+\end{lyxcode}
+{\footnotesize\textbf{Set comprehension:}}{\footnotesize\par}
+
+{\footnotesize Vytvoření nového setu z existujícího (nemění se).}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize S~=\{1,~2,~3,~4,~5\}}{\footnotesize\par}
+
+{\footnotesize S2~=~\{10~{*}~s~for~s~in~S\}}{\footnotesize\par}
+
+{\footnotesize >\textcompwordmark >\textcompwordmark >~\{10,~20,~30,~40,~50\}}{\footnotesize\par}
+\end{lyxcode}
+{\footnotesize\textbf{Directory comprehension:}}{\footnotesize\par}
+
+{\footnotesize Vytvoření nového seznamu z původního (nemění se).}{\footnotesize\par}
+
+{\footnotesize Lze modifikovat key i value.}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize D~=\{'a':1,~'b':2,~'c':3,~'d':4,~'e':5\}}{\footnotesize\par}
+
+{\footnotesize D2~=~\{key:10~{*}~value~for~key,~value~in~D.items()\}}{\footnotesize\par}
+
+{\footnotesize >\textcompwordmark >\textcompwordmark >~\{'a':~10,~'b':~20,~'c':~30,~'d':~40,~'e':~50\}}{\footnotesize\par}
+\end{lyxcode}
+\end{frame}
+
+
+\section{Příkaz break()}
+\begin{frame}[plain]{9. Příkaz break()}
+
+{\small Okamžité (předčasné) ukončení provádění těla cyklu.}{\small\par}
+
+{\small Provedeno, pokud podmínka vyhodnocena jako pravdivá.}{\small\par}
+\begin{lyxcode}
+{\small if~vyraz:}{\small\par}
+
+{\small ~~~break;}{\small\par}
+\end{lyxcode}
+{\small Pokračování prvním příkazem následujícím za cyklem.}{\small\par}
+
+{\small U vnořeného cyklu skok o 1 úroveň výše.\bigskip{}
+}{\small\par}
+
+{\small Používán, pokud byla splněna nějaká, a není třeba pokračovat.}{\small\par}
+
+{\small Tuto podmínku nelze otestovat před průchodem těla cyklu}.
+
+{\small\bigskip{}
+}{\small\par}
+
+{\small Příklad: nalezení prvku }{\small\texttt{val}}{\small{} v množině
+}{\small\texttt{X:}}{\small\par}
+\begin{lyxcode}
+{\small found~=~False~~~~~~~~\#Test,~whether~x~in~X}{\small\par}
+
+{\small for~x~in~X:~~~~~~~~~~\#Test~x~one~by~one}{\small\par}
+
+{\small ~~~if~(x~==~val)~~~~~\#Element~val~found~in~X}{\small\par}
+
+{\small ~~~~~~~found~=~true}{\small\par}
+
+{\small ~~~~~~~break}{\small\par}
+\end{lyxcode}
+{\small\textbf{\textcolor{brown}{Výhoda použití:}}}{\small\par}
+
+{\small Zjednodušení konstrukce řídící podmínky cyklu.}{\small\par}
+
+{\small Část podmínky nemusí být v řídícím výrazu cyklu.}{\small\par}
+\end{frame}
+
+
+\section{Příkaz continue()}
+\begin{frame}[plain]{10. Příkaz continue()}
+
+{\footnotesize Přeskočení zbývající části příkazů v těle cyklu.}{\footnotesize\par}
+
+{\footnotesize Provede přechod na další iteraci, pokud podmínka pravdivá.}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize if~vyraz:}{\footnotesize\par}
+
+{\footnotesize ~~~continue;}{\footnotesize\par}
+\end{lyxcode}
+{\footnotesize Příklad, třídící algoritmus Merge Sort:}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize while~i~<~n~+~m):}{\footnotesize\par}
+
+{\footnotesize ~~~~~~if~i~==~n~:~~~~~~\#Seznam~a~uz~nema~dalsi~prvky}{\footnotesize\par}
+
+{\footnotesize ~~~~~~~~~c{[}k{]}~=~b{[}j{]}}{\footnotesize\par}
+
+{\footnotesize ~~~~~~~~~j~=~j+1}{\footnotesize\par}
+
+{\footnotesize ~~~~~~~~~continue~~~~~~\#Skok~na~dalsi~iteraci}{\footnotesize\par}
+
+{\footnotesize ~~~~~~}{\footnotesize\par}
+
+{\footnotesize ~~~~~~if~(j~==~m):~~~~~\#Seznam~b~uz~nema~dalsi~prvky}{\footnotesize\par}
+
+{\footnotesize ~~~~~~~~~c{[}k{]}~=~a{[}i{]};}{\footnotesize\par}
+
+{\footnotesize ~~~~~~~~~i~=~i~+~1}{\footnotesize\par}
+
+{\footnotesize ~~~~~~~~~continue~~~~~~\#Skok~na~dalsi~iteraci}{\footnotesize\par}
+\end{lyxcode}
+{\footnotesize V praxi se příliš často nepoužívá, znepřehledňuje tělo
+cyklu.\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Nekombinovat více příkazů }{\footnotesize\texttt{continue}}{\footnotesize{}
+v jednom těle (max 2), nepřehledné.\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Skok v algoritmu, chyba v návrhu!}{\footnotesize\par}
+\end{frame}
+
+
+\section{Příkaz range()}
+\begin{frame}[plain]{11. Příkaz range()}
+
+{\footnotesize Vytváří celočíselnou aritmetickou posloupnost $(a_{n})$,
+když $\exists d\in\mathbb{N}$, $\forall d\in\mathbb{N}$ a platí
+\[
+a_{n}=a_{1}+(n-1)d,
+\]
+$d$ je diference posloupnosti.}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize ~~~range($a_{1}$,~}{\footnotesize\textrm{$a_{n}$}}{\footnotesize ,~$d$);~~~~~$a_{1}+kd<a_{n},\qquad d\in\mathbb{N}.$}{\footnotesize\par}
+\end{lyxcode}
+{\footnotesize Ukázka:}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize X=range(1,~20,~2)}{\footnotesize\par}
+
+{\footnotesize for~x~in~X:~~~}{\footnotesize\par}
+
+{\footnotesize ~~~~print(x)}{\footnotesize\par}
+
+{\footnotesize >\textcompwordmark >\textcompwordmark >~1~3~5~7~9~11~13~15~17~19}{\footnotesize\par}
+\end{lyxcode}
+{\footnotesize Často kombinován s cyklem }{\footnotesize\texttt{for}}{\footnotesize ,
+tvorba celočíselného indexu}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize range($i_{1}$,~}{\footnotesize\textrm{$i_{n}$}}{\footnotesize ,~$1$);~}{\footnotesize\par}
+\end{lyxcode}
+{\footnotesize Generuje posloupnost indexů $[i]$
+\[
+(i_{1},i_{1}+1,...,i_{1}+n-1).
+\]
+}{\footnotesize\par}
+
+{\footnotesize Přes $a_{i}$ lze iterovat, 1. a 3. parametr nepovinný.\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize Příklady použití:}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize for~i~in~range(max):~~~~~~\#Interval~0,~max-1}{\footnotesize\par}
+
+{\footnotesize ~~~pass;}{\footnotesize\par}
+
+{\footnotesize for~i~in~range(min,~max):~\#Interval~min,~max-1}{\footnotesize\par}
+
+{\footnotesize ~~~pass;}{\footnotesize\par}
+\end{lyxcode}
+\end{frame}
+
+\begin{frame}{12. Ukázka použití příkazu continue}
+
+Generování 10 náhodných čísel $x\in\left\langle x_{min},x_{max}\right\rangle $
+v $\mathbb{R}$, $x_{min}=-x_{max}.$
+
+Výpočet odmocniny
+\[
+y=\sqrt{x},\qquad x\geq0.
+\]
+Ukázka řešení v jazyce Python:
+\begin{lyxcode}
+import~random~~~~~~~~~~~~~~~~~~~~~~~\#Import~libraries
+
+import~math
+
+max~=~1000~~~~~~~~~~~~~~~~~~~~~~~~~~\#Maximum/minimum~value
+
+for~i~in~range(10):~~~~~~~~~~~~~~~~~\#i=0,1,...,~9
+
+~~~~x~=~random.randint(-max,~max)~~~\#Create~random~number~x
+
+~~~~if~x~<~0:~~~~~~~~~~~~~~~~~~~~~~~\#x~is~negative
+
+~~~~~~~~continue~~~~~~~~~~~~~~~~~~~~\#Skip~next~steps
+
+~~~~y~=~math.sqrt(x)~~~~~~~~~~~~~~~~\#Compute~y=sqrt(x)
+
+~~~~print(y)~~~~~~~~~~~~~~~~~~~~~~~~\#Print~value~y
+\end{lyxcode}
+\end{frame}
+
+\begin{frame}{13. Zásady pro práci s cykly}
+
+1) Cyklus by měl mít pouze jednu řídící proměnnou.\bigskip{}
+
+2) Hodnota řídící proměnné u for by neměla být ovlivňována v těle
+cyklu.\bigskip{}
+
+3) Řídící podmínku cyklu zapisovat v kladném tvaru.
+
+\bigskip{}
+4) Řídící podmínku zjednodušovat.
+
+\bigskip{}
+
+5) Vyvarovat se vzniku nekonečných cyklů.\bigskip{}
+
+6) Preference cyklů \texttt{while}, \texttt{for} před \texttt{do}
+\texttt{while} (přehlednost).\bigskip{}
+
+7) Příkaz \texttt{break} v těle cyklu používat pouze na jednom místě.\bigskip{}
+
+8) ... Nebo lépe se mu zcela vyhnout :-).\bigskip{}
+
+9) V těle cyklu nepoužívat skoky nebo jen výjimečně (\texttt{continue}).
+\end{frame}
+
+
+\end{document}

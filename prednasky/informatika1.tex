@@ -1,0 +1,904 @@
+\documentclass[czech]{beamer}
+\usepackage{helvet}
+\usepackage[T1]{fontenc}
+\usepackage[latin2]{inputenc}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\usepackage{babel}
+\usepackage{array}
+\usepackage{latexsym}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{calc}
+\usepackage{amstext}
+\usepackage{graphicx}
+\ifx\hypersetup\undefined
+  \AtBeginDocument{%
+    \hypersetup{pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=true,pdfborder={0 0 1},backref=false,colorlinks=false}
+  }
+\else
+  \hypersetup{pdfusetitle,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=true,pdfborder={0 0 1},backref=false,colorlinks=false}
+\fi
+
+\makeatletter
+
+%Specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+
+% User specified LaTeX commands.
+\date{}
+\beamertemplateshadingbackground{red!5}{structure!5}
+
+\usepackage{beamerthemecambridgeus}
+\usepackage{pgfnodes,pgfarrows,pgfheaps}
+
+\beamertemplatetransparentcovereddynamicmedium
+
+\usepackage {multicol}
+
+\AtBeginDocument{
+  \def\labelitemi{\(\Diamond\)}
+}
+
+\makeatother
+
+\begin{document}
+\title{Úvod do informatiky}
+\subtitle{Algoritmus. Vlastnosti algoritmu. Programovací jazyky.}
+\author{Tomá¹ Bayer | bayertom@fsv.cvut.cz}
+\institute{Katedra geomatiky, fakulta stavební ÈVUT.}
+\makebeamertitle
+\begin{frame}{Obsah pøedná¹ky}
+
+\tableofcontents{}
+\end{frame}
+
+
+\section{Úvodní informace o pøedmìtu}
+\begin{frame}{1. Plán pøedná¹ek}
+
+{\footnotesize\textcolor{red}{Tematické celky:}}{\footnotesize\par}
+
+{\footnotesize (1) Problémy a algoritmy. }{\footnotesize\par}
+
+{\footnotesize (2, 3) Datové struktury a datové typy.}{\footnotesize\par}
+
+{\footnotesize (4) Podmínky.}{\footnotesize\par}
+
+{\footnotesize (5) Cykly.}{\footnotesize\par}
+
+{\footnotesize (6) Funkce.}{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textcolor{red}{Literatura:}}{\footnotesize\par}
+
+{\footnotesize{[}1{]} VIRIUS M.: Základy algoritmizace, 2004,Vydavatelství
+ÈVUT.}{\footnotesize\par}
+
+{\footnotesize{[}2{]} On line kurz: \href{https://pyladies.cz/course.html}{https://pyladies.cz/course.html}}{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textcolor{red}{Cvièení:}}{\footnotesize\par}
+
+{\footnotesize Skriptování v jazyce Python. }{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textcolor{red}{Literatura:}}{\footnotesize\par}
+
+{\footnotesize{[}1{]} Summerfield M.: Python 3, Computer Press, 2012 }{\footnotesize\par}
+
+{\footnotesize{[}2{]} Pilgrim M.: Ponoøme se do Pythonu 3, CZ NIC,
+2010: \href{http://diveintopython3.py.cz/index.html}{http://diveintopython3.py.cz/index.html}}{\footnotesize\par}
+
+{\footnotesize{[}3{]} On line kurz: \href{https://pyladies.cz/course.html}{https://pyladies.cz/course.html}}{\footnotesize\par}
+\end{frame}
+
+
+\section{Motivace}
+\begin{frame}{2. Proè se uèit programovat?}
+
+Steve Jobs:\emph{\bigskip{}
+}
+
+\emph{\textquotedblleft Everybody in this country should learn how
+to program a computer\dots{} because it teaches you how to think\textquotedblright .\bigskip{}
+}
+
+Základní motivace: 
+\begin{enumerate}
+\item Schopnost automatizace opakujících se èinností.
+\item Pochopení, jak a proè vìci fungují.
+\item Rozvoj logického a abstraktního my¹lení.
+\item Schopnost týmové práce, kreativita
+\item Kontakt s moderními technologiemi.
+\item Atraktivní, tvùrèí a dobøe placené zamìstnání.
+\item Mo¾nost práce z domova.
+\end{enumerate}
+Nutnost celo¾ivotního vzdìlávání.
+
+Pravidlo 10-10: Za 10 let pouze 10\% poznatkù aktuálních.
+\end{frame}
+
+\begin{frame}{3. Umím programovat...}
+
+Obecnìj¹í pohled:
+\begin{enumerate}
+\item Analýza, modelování, simulace procesù.
+\item Podíl na øe¹ení slo¾itých problémù dne¹ního/budoucího svìta.
+\item Vìda, výzkum, vývoj, inovace.
+\item Aplikace v prùmyslu, zemìdìlství, slu¾bách.
+\end{enumerate}
+Konkrétnìj¹í uplatnìní:
+\begin{enumerate}
+\item Automatizované zpracování a analýza dat.
+\item CAD, poèítaèová grafika, digitální kartografie, mapové slu¾by.
+\item Modelování, analýzy, predikce v oblasti pøírodních vìd.
+\item Umìlá inteligence.
+\item Návrh a tvorba mobilních øe¹ení.
+\item Cloudová infrastruktura, big data.
+\end{enumerate}
+Front end vs. back end.
+\end{frame}
+
+
+\section{Problém a algoritmus}
+\begin{frame}{4. Problém}
+
+{\footnotesize Termín mající více významù.\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textbf{Definice 1 (Slovník spisovného jazyka èeského)}}{\footnotesize\par}
+
+{\footnotesize\emph{``Vìc k øe¹ení, nerozøe¹ená sporná otázka, otázka
+k rozhodnutí, nesnadná vìc''}}{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textbf{Definice 2 (Wikipedia).}}{\footnotesize\par}
+
+{\footnotesize\emph{``Podmínky nebo situace nebo stav, který je nevyøe¹ený,
+nebo nechtìný, nebo ne¾ádoucí.''}}{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Problém zpravidla vy¾aduje øe¹ení. }{\footnotesize\par}
+
+{\footnotesize Pro jeho nalezení nutné pochopit nejdùle¾itìj¹í aspekty
+problému.}{\footnotesize\par}
+
+{\footnotesize Z hlediska informatiky, problémy musí splòovat formální
+definici.}{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Ne v¹echny problémy lze v souèasné dobì úspì¹nì a efektivnì
+øe¹it.}{\footnotesize\par}
+
+{\footnotesize Úlohy tøídy P: snadno øe¹itelné.}{\footnotesize\par}
+
+{\footnotesize Úlohy tøídy NP: klasickými technikami neøe¹itelné.}{\footnotesize\par}
+
+{\footnotesize Mnoho z nich spadá do oblasti geoinformatiky/geoinformatiky/dpz.}{\footnotesize\par}
+\end{frame}
+
+\begin{frame}{5. Popis problému}
+
+{\footnotesize ``Problém'' z pohledu informatiky lze formalizovat:}{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textsc{\emph{NÁZEV: }}}{\footnotesize\emph{Slovní popis
+problému}}{\footnotesize\par}
+
+{\footnotesize\textsc{\emph{IN:}}}{\footnotesize\emph{ Popis pøípustného
+vstupu (mno¾ina vstupních dat). }}{\footnotesize\par}
+
+{\footnotesize\textsc{\emph{OUT:}}}{\footnotesize\emph{ Popis výsledku,
+který je pro daný vstup oèekáván.}}{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Musí existovat funkce $f$ pøiøazující vstupním datùm
+po¾adovaný výstup.}{\footnotesize\par}
+
+{\footnotesize Nalezení øe¹ení problému $\Rightarrow$ nalezení pøíslu¹né
+funkce $f$.\bigskip{}
+}{\footnotesize\par}
+
+{\small{}%
+\noindent\fcolorbox{black}{white}{\begin{minipage}[t]{1\columnwidth - 2\fboxsep - 2\fboxrule}%
+{\footnotesize\emph{Ka¾dý problém $P$ urèen uspoøádanou trojicí $P(IN,OUT,f)$
+\[
+f:IN\rightarrow OUT,
+\]
+ $IN$ mno¾ina pøípustných vstupù, $OUT$ mno¾ina oèekávaných výstupù,
+$f$ pøiøazuje ka¾dému vstupu oèekávaný výstup.}}%
+\end{minipage}}}{\small\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize IN/OUT: Kombinace znakù, celých èísel èi pøirozených
+èísel pøedstavující kódování.}{\footnotesize\par}
+\end{frame}
+
+\begin{frame}{6. Znázornìní problému}
+\begin{center}
+\includegraphics[scale=0.4]{algoritmus}
+\par\end{center}
+
+{\small\textcolor{brown}{\emph{Problém: Setøídìní posloupnosti èísel:}}}{\small\par}
+
+{\small$IN=\{16,74,8,4,11,-9,38\},$}{\small\par}
+
+{\small$OUT=\{-9,4,8,11,16,38,74\}$}{\small\par}
+\end{frame}
+
+
+\section{Algoritmus}
+\begin{frame}{7. Algoritmus}
+
+{\small Pojem cca 1000 let starý.}{\small\par}
+
+{\small Poprvé pou¾il perský matematik Abú Abdallah Muhammad ibn Musa
+al-Khwarizmi.}{\small\par}
+
+\bigskip{}
+
+{\small Algoritmus je obecný pøedpis pro øe¹ení zadaného problému. }{\small\par}
+
+{\small Posloupnost krokù doplnìných jednoznaènými pravidly.}{\small\par}
+
+{\small Analogie v bì¾ném ¾ivotì: kuchyòský recept, lékaøský pøedpis.}{\small\par}
+
+{\small\bigskip{}
+}{\small\par}
+
+{\small{}%
+\noindent\fcolorbox{black}{white}{\begin{minipage}[t]{1\columnwidth - 2\fboxsep - 2\fboxrule}%
+{\small\emph{Algoritmus $A$ øe¹í problém $P$, tj. $A(P)$, pokud
+$\forall x\in IN$ pøiøazuje v koneèném poètu krokù (alespoò jeden)
+výstup $y$, $y\in OUT$, a $y=f(x).$}}%
+\end{minipage}}}{\small\bigskip{}
+}{\small\par}
+
+{\small Poznámky:}{\small\par}
+\begin{itemize}
+\item {\small Øe¹ení vyhovuje vstupním podmínkám.}{\small\par}
+\item {\small Pro zadaný vstup $x$ mù¾e existovat více øe¹ení $y$, $A$
+by mìl nalézt alespoò jedno.}{\small\par}
+\item {\small Mno¾ina vstupù zpravidla nekoneènì velká.}{\small\par}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{8. Vlastnosti algoritmu}
+
+{\footnotesize\textbf{\emph{A) Determinovanost}}}{\footnotesize\par}
+
+{\footnotesize Algoritmus jednoznaèný jako celek i v ka¾dém svém kroku. }{\footnotesize\par}
+
+{\footnotesize Nelze dosáhnout pøirozenými jazyky, proto pro popis
+pou¾ívány formální jazyky.}{\footnotesize\par}
+\begin{center}
+{\footnotesize{}%
+\noindent\fcolorbox{black}{white}{\begin{minipage}[t]{1\columnwidth - 2\fboxsep - 2\fboxrule}%
+\begin{center}
+{\footnotesize\textcolor{red}{Algoritmus je invariantní vùèi formálnímu
+jazyku !!!}}
+\par\end{center}%
+\end{minipage}}}{\footnotesize\par}
+\par\end{center}
+
+{\footnotesize\textbf{\emph{B) Rezultativnost }}}{\footnotesize\par}
+
+{\footnotesize Vede v¾dy ke správnému výsledku v }{\footnotesize\emph{koneèném}}{\footnotesize{}
+poètu krokù.\smallskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textbf{\emph{C) Hromadnos}}}{\footnotesize\textbf{t}}{\footnotesize\par}
+
+{\footnotesize Lze pou¾ít pro øe¹ení stejné tøídy problémù s rùznými
+vstupními hodnotami.}{\footnotesize\par}
+
+{\footnotesize Pro jejich libovolnou kombinaci obdr¾íme }{\footnotesize\emph{jednoznaèné}}{\footnotesize{}
+øe¹ení.\smallskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textbf{\emph{D) Opakovatelnost}}}{\footnotesize\par}
+
+{\footnotesize Pøi opakovaném pou¾ití stejných vstupních dat v¾dy obdr¾íme
+}{\footnotesize\textcolor{brown}{\emph{tentý¾}}}{\footnotesize{} výsledek.\smallskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textbf{\emph{E) Efektivnost}}}{\footnotesize\par}
+
+{\footnotesize Ka¾dý krok algoritmu by mìl být efektivní.}{\footnotesize\par}
+
+{\footnotesize Krok vyu¾ívá elementární operace, které lze provádìt
+v }{\footnotesize\emph{koneèném}}{\footnotesize{} èase.}{\footnotesize\par}
+\end{frame}
+
+\begin{frame}{9. Øe¹ení problému prostøednictvím algoritmu (1/2)}
+
+Fáze øe¹ení problému:\bigskip{}
+
+\textbf{1) Definice~problému}
+
+Formulace problému spoleènì s cílem, kterého chceme dosáhnout. 
+
+Definujeme po¾adavky týkající se tvaru vstupních a výstupních dat.\bigskip{}
+
+\textbf{2) Analýza~problému}
+
+Stanovení krokù a metod vedoucích k jeho øe¹ení. 
+
+Rozkládání problému na dílèí podproblémy: dekompozice.
+
+Jejich¾ jednodu¹¹í ne¾ øe¹ení problému jako celku.
+
+\textcolor{brown}{\emph{Top-Down Decomposition.}}\bigskip{}
+
+\textbf{3) Sestavení~algoritmu}
+
+Navr¾ení a sestavení algoritmu øe¹ící po¾adovaný problém.
+
+Dílèí komponenty skládány do slo¾itìj¹ích: kompozice.
+
+\textcolor{brown}{\emph{Bottom-Up Approach.}}
+\end{frame}
+
+\begin{frame}{10. Top-Down Decomposition}
+\begin{center}
+\includegraphics[scale=0.3]{top_down_decomposition}
+\par\end{center}
+
+\end{frame}
+
+\begin{frame}{11. Øe¹ení problému prostøednictvím algoritmu (2/2)}
+
+{\small\textbf{4)~Kódování~algoritmu}}{\small\par}
+
+{\small Pøevod algoritmu do formálního jazyka.}{\small\par}
+
+{\small Zpravidla se jedná programovací jazyk.}{\small\par}
+
+{\small Výsledkem ``}{\small\textcolor{brown}{\emph{Proof of Concept}}}{\small ''.}{\small\par}
+
+{\small\bigskip{}
+}{\small\par}
+
+{\small\textbf{5)~Ovìøení~správnosti~algoritmu}}{\small\par}
+
+{\small Ovìøení funkènosti algoritmu na koneèném vzorku dat. }{\small\par}
+
+{\small Zahrnuje bì¾né situace + singulární pøípady (mnohdy obtí¾né).}{\small\par}
+
+{\small 3 mno¾iny: Worst, Best, Average.}{\small\par}
+
+{\small Rùzné strategie testování: napø. }{\small\emph{Unit Testing.}}{\small\par}
+
+{\small\bigskip{}
+}{\small\par}
+
+{\small\textbf{6)~Nasazení~algoritmu}}{\small\par}
+
+{\small Splòuje\textendash li algoritmus po¾adavky, lze ho nasadit
+do \quotedblbase ostrého provozu\textquotedblleft . }{\small\par}
+
+{\small\bigskip{}
+}{\small\textbf{Poznámky:}}{\small\par}
+
+{\small Algoritmus by mìl být dokázán pro v¹echny varianty vstupních
+dat.}{\small\par}
+
+{\small Bod 5 nejnároènìj¹í (90\% èasu/nákladù)!}{\small\par}
+\end{frame}
+
+\begin{frame}{12. Znázornìní algoritmu}
+
+{\scriptsize Algoritmus lze znázoròovat mnoha zpùsoby:}{\scriptsize\par}
+\begin{itemize}
+\item {\scriptsize\textbf{Grafické vyjádøení}}{\scriptsize\par}
+
+{\scriptsize Popsán formalizovanou soustavou grafických symbolù: }{\scriptsize\par}
+\begin{itemize}
+\item {\scriptsize vývojové diagramy (UML), }{\scriptsize\par}
+\item {\scriptsize strukturogramy.\medskip{}
+}{\scriptsize\par}
+\end{itemize}
+{\scriptsize (+) pøehlednost, názornost, }{\scriptsize\par}
+
+{\scriptsize (+) znázornìní struktury, }{\scriptsize\par}
+
+{\scriptsize (+) informace o postupu øe¹ení.\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize (-) nároènost konstrukce symbolù a vztahù, }{\scriptsize\par}
+
+{\scriptsize (-) obtí¾ná mo¾nost dodateèných úprav, vede k ``pøekreslení''
+celého postupu, }{\scriptsize\par}
+
+{\scriptsize (-) není vhodné pro rozsáhlé a slo¾ité problémy.\medskip{}
+}{\scriptsize\par}
+\item {\scriptsize\textbf{Textové vyjádøení}}{\scriptsize\par}
+
+{\scriptsize Nejèastìji pou¾ívané varianty: }{\scriptsize\par}
+\begin{itemize}
+\item {\scriptsize slovní popis, pseudokód, }{\scriptsize\par}
+\item {\scriptsize PDL, }{\scriptsize\par}
+\item {\scriptsize formalizovaný jazyk. }{\scriptsize\par}
+\end{itemize}
+{\scriptsize (+) pøehlednost, jednoznaènost, }{\scriptsize\par}
+
+{\scriptsize (+) snadný pøepis, }{\scriptsize\par}
+
+{\scriptsize (+) mo¾nost modifikace postupu.}{\scriptsize\par}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{13. Vývojový diagram øe¹ení kvadratické rovnice}
+
+\begin{center}
+\includegraphics[scale=0.18]{kvad_rovnice}
+\par\end{center}
+
+\end{frame}
+
+\begin{frame}{14. Textové vyjádøení øe¹ení kvadratické rovnice}
+
+\begin{tabular}{>{\raggedright}p{10cm}}
+\toprule 
+\textbf{Algoritmus }3: Kvadratická rovnice (a,b,c)\tabularnewline
+\midrule 
+1: \texttt{read} (a,b,c)
+
+2: D=b{*}b-4{*}a{*}c
+
+2: \texttt{if} $D>0$:
+
+3: \hspace{1cm}x1=(-b+sqrt(D))/(2{*}a)
+
+4: \hspace{1cm}x2=(-b- sqrt(D))/(2{*}a)
+
+5: \texttt{else if }$D=0$
+
+6: \hspace{1cm}x1=(-b+sqrt(D))/(2{*}a)
+
+7: \hspace{1cm}x2=x1
+
+8: \texttt{else}
+
+9: \hspace{1cm}x1=$\textrm{\O}$, x2=x1
+
+10: \texttt{print} (x1,x2)\tabularnewline
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{15. Paradigmata programování}
+
+{\scriptsize Souhrn základních domnìnek, pøedpokladù, pøedstav.}{\scriptsize\par}
+
+{\scriptsize Zahrnuje zpùsob formulace problému, metodologických prostøedkù
+k øe¹ení.\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize Paradigma v programování ovlivòuje styl programování.}{\scriptsize\par}
+
+{\scriptsize Definuje jakým zpùsobem vnímá programátor problém, a jak
+ho øe¹í.\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize\textbf{Rùzná paradigmata}}{\scriptsize :}{\scriptsize\par}
+
+{\scriptsize{}%
+\begin{tabular}{|>{\raggedright}p{4cm}|>{\raggedright}p{7.2cm}|}
+\hline 
+{\scriptsize Procedurální (imperativní) programování} & {\scriptsize Základem algoritmus, pøesnì daná posloupnost krokù.}\tabularnewline
+\hline 
+\hline 
+{\scriptsize Objektovì orientované programování} & {\scriptsize Zalo¾eno na objektovì orientovaném pøístupu k problému.}\tabularnewline
+\hline 
+\hline 
+{\scriptsize Deklarativní programování} & {\scriptsize Opak imperativního programování (øíkáme co, ne jak).}\tabularnewline
+\hline 
+\hline 
+{\scriptsize Funkcionální programování} & {\scriptsize Varianta deklarativního programování, zalo¾eno na lambda
+kalkulu.}\tabularnewline
+\hline 
+\hline 
+{\scriptsize Logické programování} & {\scriptsize Kombinace procedurálního / deklarativního pøístupu.}\tabularnewline
+\hline 
+\hline 
+{\scriptsize Paralelní programování} & {\scriptsize Pro dekomponovatelné úlohy, paralelizace zpracování.}\tabularnewline
+\hline 
+\hline 
+{\scriptsize Distribuované programování} & {\scriptsize Zpracování probíhá po èástech na více poèítaèích.}\tabularnewline
+\hline 
+\end{tabular}}{\scriptsize\par}
+\end{frame}
+
+
+\section{Programovací jazyky a jejich dìlení}
+\begin{frame}{16. Jazyky a jejich vlastnosti}
+
+{\small Dìlení do 2 skupin:\medskip{}
+}{\small\par}
+\begin{itemize}
+\item {\small\textbf{Pøirozené jazyky}}{\small}
+
+{\small\par}{\small Komunikaèní prostøedek mezi lidmi.}{\small\par}
+
+{\small Skládání slov do vy¹¹ích celkù není øízeno tak striktními pravidly. }{\small\par}
+
+{\small Nevýhodou významová nejednoznaènost nìkterých slov.}{\small\par}
+
+{\small Synonyma/homonyma omezují jejich pou¾ití pøi popisu problémù.
+\medskip{}
+}{\small\par}
+\item {\small\textbf{Formální jazyky}}{\small}
+
+{\small\par}{\small Vznikají umìlou cestou.}{\small\par}
+
+{\small Skládání symbolù do vy¹¹ích celkù øízeno striktnìj¹ími pravidly.}{\small\par}
+
+{\small Zamezení významové nejednoznaènosti.\medskip{}
+}{\small\par}
+
+{\small Zástupci: }{\small\par}
+\begin{itemize}
+\item {\small programovací jazyky, }{\small\par}
+\item {\small matematická symbolika, }{\small\par}
+\item {\small chemické znaèky, }{\small\par}
+\item {\small jazyk mapy,}{\small\par}
+\item {\small ...}{\small\par}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{17. Dìlení programovacích jazykù}
+
+Kritéria pro dìlení programovacích jazykù:{\small\bigskip{}
+}{\small\par}
+\begin{itemize}
+\item \emph{Podle zpùsobu zápisu instrukcí}
+
+Ni¾¹í programovací jazyky.
+
+Vy¹¹í programovací jazyky.{\small\bigskip{}
+}{\small\par}
+\item \emph{Podle zpùsobu pøekladu }
+
+Kompilované jazyky.
+
+Interpretované jazyky.{\small\bigskip{}
+}{\small\par}
+\item \emph{Podle zpùsobu øe¹ení problému}
+
+Procedurální jazyky.
+
+Neprocedurální jazyky.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{18. Dìlení programovacích jazykù}
+
+{\footnotesize\textbf{Ni¾¹í programovací jazyky}}{\footnotesize : }{\footnotesize\par}
+
+{\footnotesize Programováníprovádìno ve strojových instrukcích. }{\footnotesize\par}
+
+{\footnotesize (+) Výsledný kód velmi rychlý.}{\footnotesize\par}
+
+{\footnotesize (-) Na programátoraklade znaèné nároky (pøehlednost,
+srozumitelnost).}{\footnotesize\par}
+
+{\footnotesize (-) Program je závislý na architektuøe procesoru.\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize Zástupci: strojový kód, Assembler.}{\footnotesize{}
+\begin{table}[H]
+\centering{}{\footnotesize{\ttfamily{}%
+\begin{tabular}{c}
+{\footnotesize\texttt{mov al, 61h}}\tabularnewline
+\end{tabular}}}
+\end{table}
+}{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textbf{Vy¹¹í programovací jazyky}}{\footnotesize : }{\footnotesize\par}
+
+{\footnotesize Pou¾ívají zástupné pøíkazy nahrazující skupiny instrukcí.}{\footnotesize\par}
+
+{\footnotesize Tyto následnì pøekládány do strojového kódu.\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize (+) Struktura programu je pøehlednìj¹í.}{\footnotesize\par}
+
+{\footnotesize (+) Vývoj programu je jednodu¹¹í.}{\footnotesize\par}
+
+{\footnotesize (+) SW není závislý na architektuøe procesoru. }{\footnotesize\par}
+
+{\footnotesize (-) O nìco pomalej¹í kód.\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize První vy¹¹í programovací jazyk: Fortran. }{\footnotesize\par}
+
+{\footnotesize Vìt¹ina souèasných programovacích jazykù: Basic, Pascal,
+C, C++, C\#, Java, Python, Rubby.}{\footnotesize\par}
+\end{frame}
+
+\begin{frame}{19. Interpretované jazyky}
+
+{\scriptsize Vyu¾ívají }{\scriptsize\emph{virtuální stroj}}{\scriptsize ,
+klíèovou souèástí }{\scriptsize\emph{interpreter}}{\scriptsize .}{\scriptsize\par}
+
+{\scriptsize Program pøímo vykonávající instrukce jiného programu z
+jeho zdrojového kódu.\bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize 3 typy interpreteru: }{\scriptsize\par}
+\begin{itemize}
+\item {\scriptsize\emph{Pøímé vykonávání zdrojového kódu}}{\scriptsize}
+
+{\scriptsize\par}{\scriptsize Neprovádìna kompilace, nevýhodou pomalost. Zástupce: Basic.}{\scriptsize\par}
+\item {\scriptsize\emph{Pøeklad do mezikódu}}{\scriptsize}
+
+{\scriptsize\par}{\scriptsize Zdrojový kód pøelo¾en do mezikódu (bytekód), nezávislý
+na operaèním systému.}{\scriptsize\par}
+
+{\scriptsize Ten následnì vykonán interpreterem.}{\scriptsize\par}
+
+{\scriptsize Zástupce: Python.}{\scriptsize\par}
+\item {\scriptsize\emph{Just in Time}}{\scriptsize}
+
+{\scriptsize\par}{\scriptsize Zdrojový kód pøelo¾en do mezikódu (bytekód).}{\scriptsize\par}
+
+{\scriptsize Celek, resp. èásti, pøi pøekladu kompilovány do strojového
+kódu.}{\scriptsize\par}
+
+{\scriptsize Nevýhoda: prodleva pøi spu¹tìní programu.}{\scriptsize\par}
+
+{\scriptsize Zástupce: Java, C\#.}{\scriptsize\par}
+\end{itemize}
+{\scriptsize (-) Del¹í spu¹tìní.}{\scriptsize\par}
+
+{\scriptsize (-) Pomalej¹í bìh programu. }{\scriptsize\par}
+
+{\scriptsize (-) Vìt¹í spotøeba hardwarových prostøedkù.\bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize (+) Nezávislost na cílové platformì (kompatabilita).}{\scriptsize\par}
+
+{\scriptsize (+) Snadnìj¹í správa pamìti.}{\scriptsize\par}
+
+{\scriptsize (+) GUI standardem jazyka.}{\scriptsize\par}
+\end{frame}
+
+\begin{frame}{20. Kompilované jazyky}
+
+Program je pøelo¾en do strojového kódu.
+
+Poté mù¾e být opakovanì spou¹tìn ji¾ bez pøítomnosti interpreteru.
+{\small\medskip{}
+}{\small\par}
+
+Pøeklad provádìn kompilátorem.
+
+Výsledkem bývá spustitelný soubor (napø. exe na platformì Windows).
+{\small\bigskip{}
+}{\small\par}
+
+(+) Kód rychlej¹í ne¾ u jazykù interpretovaných.
+
+(+) Ni¾¹í hardwarové nároky.
+
+(+) Bìh bez interpreteru (nic se nemusí instalovat).{\small\bigskip{}
+}{\small\par}
+
+(-) Pøelo¾ený kód není univerzálnì pou¾itelný pod rùznými OS.
+
+(-) Nutnost kompilace pro rùzné platformy.
+
+(-) Slo¾itìj¹í správa pamìti.
+
+(-) GUI (knihovny tøetích stran).
+
+{\small\bigskip{}
+}{\small\par}
+
+Zástupci: C, C++, Fortran, Pascal.
+\end{frame}
+
+\begin{frame}{21. Procedurální jazyky}
+
+{\footnotesize Vycházejí z paradigmatu }{\footnotesize\textcolor{brown}{\emph{procedurálního
+(imperativního) programování}}}{\footnotesize .}{\footnotesize\par}
+
+{\footnotesize Øe¹ení problému popsáno pomocí posloupnosti pøíkazù
+na základì algoritmu.}{\footnotesize\par}
+
+{\footnotesize Program tvoøen kombinací promìnných, podmínek, cyklù,
+procedur.}{\footnotesize\par}
+
+{\footnotesize Vìt¹ina programovacích jazykù umo¾òuje imperativní pøístup.\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Dìlení do dvou skupin:}{\footnotesize\par}
+\begin{itemize}
+\item {\footnotesize\emph{Strukturované jazyky: }}
+
+{\footnotesize\par}{\footnotesize Algoritmus rozdìlen dílèí kroky realizované podprogramy.}{\footnotesize\par}
+
+{\footnotesize Tyto následnì integrovány v jeden celek.}{\footnotesize\par}
+
+{\footnotesize Zástupce: C.\medskip{}
+}{\footnotesize\par}
+\item {\footnotesize\emph{Objektovì orientované jazyky:}}{\footnotesize{}
+}
+
+{\footnotesize\par}{\footnotesize Popis a hledání øe¹ení úloh postupy blízkými lidskému
+uva¾ování.}{\footnotesize\par}
+
+{\footnotesize Vyu¾ití objektového modelu, ka¾dý objekt má urèité chování
+a vlastnosti.}{\footnotesize\par}
+
+{\footnotesize Objekty vytváøeny ze ``¹ablon'', tzv. tøíd.}{\footnotesize\par}
+
+{\footnotesize Mohou spolu komunikovat prostøednictvím rozhraní.}{\footnotesize\par}
+
+{\footnotesize Zástupci: C++, Java, C\#.}{\footnotesize\par}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{22. Neprocedurální jazyky}
+
+{\small Vycházejí z paradigmatu }{\small\textcolor{brown}{\emph{deklarativního
+(neprocedurálního) programování.}}}{\small\par}
+
+{\small Snaha o eliminaci chyb, které vznikají pøi vývoji algoritmù.}{\small\par}
+
+{\small\bigskip{}
+}{\small\par}
+
+{\small Definován pouze problém (cíl), popø. vztahy, a nikoliv jeho
+øe¹ení.}{\small\par}
+
+{\small Vlastní algoritmizaci problému øe¹í pøekladaè.\bigskip{}
+}{\small\par}
+
+{\small Pøíkazy pro opakování (cykly) nahrazeny rekurzí.}{\small\par}
+
+{\small Ménì èasté pou¾ívání promìnných.}{\small\par}
+
+{\small\bigskip{}
+}{\small\par}
+
+{\small Kód nemusí být zpracováván lineárnì (poèátek->konec). }{\small\par}
+
+{\small\bigskip{}
+}{\small\par}
+
+{\small Zástupci: SQL, Scheme, Prolog.\medskip{}
+}{\small\par}
+
+{\small S výjimkou SQL jsou ménì èasto pou¾ívány.}{\small\par}
+\end{frame}
+
+\begin{frame}[plain]{23. Srovnání 4 programovacích jazykù}
+
+\includegraphics[scale=0.13]{quadr_4_languages}
+
+{\tiny{}%
+\begin{tabular}{|c|c|c|c|}
+\hline 
+{\tiny Language} & {\tiny Lines} & {\tiny Words} & {\tiny Characters}\tabularnewline
+\hline 
+\hline 
+{\tiny Python} & {\tiny 11} & {\tiny 56} & {\tiny 385}\tabularnewline
+\hline 
+{\tiny Matlab} & {\tiny 13} & {\tiny 58} & {\tiny 392}\tabularnewline
+\hline 
+{\tiny C++} & {\tiny 17} & {\tiny 58} & {\tiny 430}\tabularnewline
+\hline 
+{\tiny Java} & {\tiny 17} & {\tiny 65} & {\tiny 473}\tabularnewline
+\hline 
+\end{tabular}}{\tiny\par}
+\end{frame}
+
+
+\section{Zápis a pøeklad programu}
+\begin{frame}{24. Zápis zdrojového kódu}
+
+{\footnotesize\textbf{Editor: }}{\footnotesize\par}
+
+{\footnotesize Textový soubor, ASCII bez formátování, nepou¾ívat textové
+editory.}{\footnotesize\par}
+
+{\footnotesize Syntax Highlighting, Code Completion.}{\footnotesize\par}
+
+\includegraphics[scale=0.15]{python_editor}
+
+\bigskip{}
+
+\end{frame}
+
+\begin{frame}[plain]{25. Proces pøekladu (1/2)}
+
+{\tiny Odli¹ný pøístup pro kompilované/interpretované jazyky.}{\small\medskip{}
+}{\small\par}
+
+{\tiny\textbf{Preprocesor: }}{\tiny\par}
+
+{\tiny Pøedzpracování zdrojového kódu, vynechání komentáøù, includování
+souborù, zpracování maker. Výsledkem opìt textový soubor.\bigskip{}
+}{\tiny\par}
+
+{\tiny\textbf{Kompilátor: }}{\tiny\par}
+
+{\tiny Pøeklad textového souboru vytvoøeného preprocesorem do assembleru. }{\tiny\par}
+
+{\tiny Následnì pøeklad do relativního kódu (absolutní adresy promìnných
+a funkcí nemusí být je¹tì známy), tzv. Object code, {*}.obj.}{\tiny\par}
+
+{\tiny Ka¾dý programový modul tvoøen samostatným {*}.obj souborem.}{\tiny\par}
+\begin{center}
+{\footnotesize\includegraphics[scale=0.5]{compiler_general}}{\footnotesize\par}
+\par\end{center}
+
+\end{frame}
+
+\begin{frame}[plain]{26. Proces pøekladu (2/2)}
+
+{\tiny\textbf{Linker:}}{\tiny\par}
+
+{\tiny Spojení jednotlivých {*}.obj souborù generovaných kompilátorem.}{\tiny\par}
+
+{\tiny Relativní adresy nahrazeny absolutními.}{\tiny\par}
+
+{\tiny Výsledkem pøímo spustitelný kód.}{\tiny\par}
+\begin{center}
+{\tiny\includegraphics[scale=0.4]{cpp_compiler}}{\tiny\par}
+\par\end{center}
+
+\begin{center}
+\includegraphics[scale=0.18]{python_compiler3}
+\par\end{center}
+
+\end{frame}
+
+\begin{frame}{27. Odladìní aplikace}
+
+{\tiny\textbf{Debugger:}}{\tiny\par}
+
+{\tiny Slou¾í pro ladìní programu.}{\tiny\par}
+
+{\tiny Hledání chyb nastávající za bìhu programu.}{\tiny\par}
+
+{\tiny Nástroje Break Point (Conditional), Watch, Evaluate, Step Into/Over,
+Run To Cursor...}{\tiny\par}
+
+\includegraphics[scale=0.13]{python_debugger}
+\end{frame}
+
+
+\end{document}

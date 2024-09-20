@@ -1,0 +1,1149 @@
+\documentclass[czech]{beamer}
+\usepackage{helvet}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage[latin2]{inputenc}
+\usepackage{float}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+\newenvironment{lyxcode}
+  {\par\begin{list}{}{
+    \setlength{\rightmargin}{\leftmargin}
+    \setlength{\listparindent}{0pt}% needed for AMS classes
+    \raggedright
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \normalfont\ttfamily}%
+   \def\{{\char`\{}
+   \def\}{\char`\}}
+   \def\textasciitilde{\char`\~}
+   \item[]}
+  {\end{list}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\date{}
+\usepackage{colortbl}
+\beamertemplateshadingbackground{red!5}{structure!5}
+
+\usepackage{beamerthemecambridgeus}
+\usepackage{pgfnodes,pgfarrows,pgfheaps}
+
+\beamertemplatetransparentcovereddynamicmedium
+% Added by lyx2lyx
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+\title{Booleovská algebra. Podmínìný pøíkaz. }
+\subtitle{Booleovská funkce. Booleovské zákony. Pøíkaz if/else.}
+\author{Tomá¹ Bayer | bayertom@natur.cuni.cz}
+\institute{Katedra aplikované geoinformatiky a kartografie, Pøírodovìdecká fakulta
+UK.}
+\makebeamertitle
+\begin{frame}{Obsah pøedná¹ky}
+
+\tableofcontents{}
+\end{frame}
+
+\section{Booleovská funkce}
+\begin{frame}{1. Úvod}
+
+\textbf{Spojité~velièiny:}
+
+Promìnné velièiny, které nabývají ``nekoneèného'' mno¾ství hodnot.
+
+Lze je popsat spojitými promìnnými a vyjádøit reálnými datovými typy.\medskip{}
+
+\textbf{Diskrétní~velièiny:}
+
+Promìnné velièiny, které nabývají koneèného mno¾ství hodnot. 
+
+Lze je popsat diskrétními promìnnými a vyjádøit celoèíselnými datovými
+typy.\medskip{}
+
+\textbf{Booleovská~algebra:}
+
+Promìnné velièiny nabývají hodnot 0,1.
+
+Hodnotu 0 lze interpretovat jako nepravda, hodnotu 1 jako pravda.
+
+V informatice hraje velmi výraznou roli pøi konstrukci relací.
+\end{frame}
+
+\begin{frame}[plain]{2. Booleovská funkce}
+
+\noindent{\scriptsize Booleovská funkce $n$ promìnných $f:B^{n}\rightarrow B$,
+}{\scriptsize\emph{
+\[
+y=f(x_{1},...,x_{n}),\qquad x_{i},y\in B.
+\]
+}}{\scriptsize\par}
+
+{\scriptsize Unární funkce, $n=1$, $f:B^{1}\rightarrow B,$ 
+\[
+y=f(x_{1}).
+\]
+Jednoprvková booleovská algebra 
+\[
+B^{1}=\{0,1\}^{1}.
+\]
+}{\scriptsize\par}
+
+{\scriptsize Binární funkce, $n=2$, $f:B^{2}\rightarrow B,$
+\[
+y=f(x_{1},x_{2}).
+\]
+Dvouprvková booleovská algebra
+\[
+B^{2}=\{0,1\}^{2}=\{0,1\}\times\{0,1\}=\{\{0,0\},\{0,1\},\{1,0\},\{1,1\}\}.
+\]
+}{\scriptsize\textbf{Pravdivostní tabulka:}}{\scriptsize\par}
+
+{\scriptsize Schematické znázornìní prvkù a funkèních hodnot.}{\scriptsize\par}
+
+{\scriptsize Sousední prvky se li¹í právì o 1 hodnotu.}{\scriptsize\par}
+
+{\scriptsize{}
+\begin{table}[H]
+\centering{}{\scriptsize{}%
+\begin{tabular}{|c|c|}
+\hline 
+{\scriptsize$x_{1}$} & {\scriptsize$y$}\tabularnewline
+\hline 
+\hline 
+{\scriptsize$x_{1}^{\prime}$} & {\scriptsize$f(x_{1}^{\prime})$}\tabularnewline
+\hline 
+{\scriptsize$x_{1}$} & {\scriptsize$f(x_{1})$}\tabularnewline
+\hline 
+\end{tabular}}{\scriptsize{} \quad{}}{\scriptsize{}%
+\begin{tabular}{|c|c|c|}
+\hline 
+{\scriptsize$x_{1}$} & {\scriptsize$x_{2}$} & {\scriptsize$y$}\tabularnewline
+\hline 
+\hline 
+{\scriptsize$x_{1}^{\prime}$} & {\scriptsize$x_{2}^{\prime}$} & {\scriptsize$f(x_{1}^{\prime},x_{2}^{\prime})$}\tabularnewline
+\hline 
+{\scriptsize$x_{1}^{\prime}$} & {\scriptsize$x_{2}$} & {\scriptsize$f(x_{1}^{\prime},x_{2})$}\tabularnewline
+\hline 
+{\scriptsize$x_{1}$} & {\scriptsize$x_{2}^{\prime}$} & {\scriptsize$f(x_{1},x_{2}^{\prime})$}\tabularnewline
+\hline 
+{\scriptsize$x_{1}$} & {\scriptsize$x_{2}$} & {\scriptsize$f(x_{1},x_{2})$}\tabularnewline
+\hline 
+\end{tabular}}{\scriptsize\quad{}}
+\end{table}
+}{\scriptsize{} }{\scriptsize\par}
+\end{frame}
+
+
+\section{Pøehled unárních booleovských funkcí}
+\begin{frame}{3. Unární booleovská funkce}
+
+{\footnotesize Unární booleovská funkce $f:B^{1}\rightarrow B$ 
+\[
+y=f(x_{1}),\qquad x_{1},y\in B.
+\]
+}{\footnotesize\par}
+
+{\footnotesize Definièní obor unární funkce dán $2^{1}$ hodnotami.}{\footnotesize\par}
+
+{\footnotesize Existuje }{\footnotesize\textrm{$2^{2^{1}}$ }}{\footnotesize unárních
+booleovských funkcí.\bigskip{}
+}{\footnotesize\par}
+\begin{center}
+{\footnotesize{}%
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+{\footnotesize$x_{1}$} & {\footnotesize$f_{1}(x_{1})$} & {\footnotesize$f_{2}(x_{1})$} & {\footnotesize$f_{3}(x_{1})$} & {\footnotesize$f_{4}(x_{1})$}\tabularnewline
+\hline 
+\hline 
+{\footnotesize 0} & {\footnotesize 0} & {\footnotesize 1} & {\footnotesize 0} & {\footnotesize 1}\tabularnewline
+\hline 
+{\footnotesize 1} & {\footnotesize 0} & {\footnotesize 0} & {\footnotesize 1} & {\footnotesize 1}\tabularnewline
+\hline 
+\end{tabular}}{\footnotesize\bigskip{}
+}{\footnotesize\par}
+\par\end{center}
+
+{\footnotesize Pøehled unárních booleovských funkcí:}{\footnotesize\par}
+\begin{itemize}
+\item {\footnotesize Falsum.}{\footnotesize\par}
+\item {\footnotesize Negace.}{\footnotesize\par}
+\item {\footnotesize Aserce.}{\footnotesize\par}
+\item {\footnotesize Verum. }{\footnotesize\par}
+\end{itemize}
+{\footnotesize V programování pou¾ívána negace.}{\footnotesize\par}
+\end{frame}
+
+\begin{frame}[plain]{4. Pøehled unárních booleovských funkcí}
+
+{\scriptsize Falsum
+\[
+f_{1}(x_{1})\rightarrow\{0\}.
+\]
+}{\scriptsize\par}
+
+{\scriptsize Libovolné hodnotì $x$ pøiøazuje hodnotu False. }{\scriptsize\par}
+
+{\scriptsize\bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize Negace
+\begin{eqnarray*}
+f_{2}(x_{1}) & = & \begin{cases}
+1, & \mbox{pro }x_{1}=0,\\
+0, & \mbox{pro }x_{1}=1.
+\end{cases}
+\end{eqnarray*}
+Nejznámìj¹í a nejèastìji pou¾ívaná unární funkce. }{\scriptsize\par}
+
+{\scriptsize Pøiøazuje $f(x_{1})$ opaènou hodnotu ne¾ $x_{1}$ ($\overline{x}_{1}$
+doplòek k $x_{1}$).}{\scriptsize\par}
+
+{\scriptsize Oznaèována:$^{\prime}$ $\overline{\cdot}$, !, not, \textasciitilde .}{\scriptsize\par}
+
+{\scriptsize\bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize Aserce
+\begin{eqnarray*}
+f_{3}(x_{1}) & = & \begin{cases}
+1, & \mbox{pro }(x_{1})=1,\\
+0, & \mbox{pro }(x_{1})=0.
+\end{cases}
+\end{eqnarray*}
+Aserce pøiøazuje hodnotì $f(x_{1})$ hodnotu promìnné $x_{1}$.\bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize Verum $y=f_{4}(x)$ 
+\[
+f_{4}(x_{1})\rightarrow\{1\}.
+\]
+}{\scriptsize\par}
+
+{\scriptsize Libovolné hodnotì $x_{1}$ pøiøazuje hodnotu True. }{\scriptsize\par}
+\end{frame}
+
+
+\section{Pøehled binárních booleovských funkcí}
+\begin{frame}{5. Binární booleovská funkce}
+
+{\small Booleovská funkce $f:B^{2}\rightarrow B$ dvou promìnných}{\footnotesize
+\[
+y=f(x_{1},x_{2}),\qquad x_{1},x_{2},y\in B.
+\]
+}{\footnotesize\par}
+
+{\small Definièní obor binární funkce dán $2^{2}$ hodnotami.}{\small\par}
+
+{\small Existuje }{\small\textrm{$2^{2^{2}}=16$ }}{\small binárních
+booleovských funkcí.\bigskip{}
+}{\small\par}
+
+{\small Nejèastìji pou¾ívané booleovské binární funkce:}{\small\par}
+\begin{itemize}
+\item {\small Konjunkce.}{\small\par}
+\item {\small Disjunkce.}{\small\par}
+\item {\small Negace konjunkce.}{\small\par}
+\item {\small Negace disjunkce.}{\small\par}
+\item {\small Ekvivalence.}{\small\par}
+\item {\small Nonekvivalence.}{\small\par}
+\item {\small Implikace.}{\small\par}
+\end{itemize}
+{\small V informatice pou¾ívány nejèastìji konjunkce a disjunkce.}{\small\par}
+\end{frame}
+
+\begin{frame}{6. Pøehled Booleovských funkcí v $B^{2}$}
+
+\begin{center}
+\begin{tabular}{|c|c|cccccccc|}
+\hline 
+$x_{1}$ & $x_{2}$ & $f_{1}$ & $f_{2}$ & $f_{3}$ & $f_{4}$ & $f_{5}$ & $f_{6}$ & $f_{7}$ & $f_{8}$\tabularnewline
+\hline 
+\hline 
+0 & 0 & 0 & \textcolor{brown}{0} & 0 & 0 & 0 & 0 & \textcolor{brown}{0} & \textcolor{brown}{0}\tabularnewline
+\hline 
+0 & 1 & 0 & \textcolor{brown}{0} & 0 & 0 & 1 & 1 & \textcolor{brown}{1} & \textcolor{brown}{1}\tabularnewline
+\hline 
+1 & 0 & 0 & \textcolor{brown}{0} & 1 & 1 & 0 & 0 & \textcolor{brown}{1} & \textcolor{brown}{1}\tabularnewline
+\hline 
+1 & 1 & 0 & \textcolor{brown}{1} & 0 & 1 & 0 & 1 & \textcolor{brown}{0} & \textcolor{brown}{1}\tabularnewline
+\hline 
+\multicolumn{1}{c}{} & \multicolumn{1}{c}{} &  &  &  &  &  &  &  & \multicolumn{1}{c}{}\tabularnewline
+\hline 
+$x_{1}$ & $x_{2}$ & $f_{9}$ & $f_{10}$ & $f_{11}$ & $f_{12}$ & $f_{13}$ & $f_{14}$ & $f_{15}$ & $f_{16}$\tabularnewline
+\hline 
+0 & 0 & \textcolor{brown}{1} & 1 & 1 & 1 & 1 & \textcolor{brown}{1} & \textcolor{brown}{1} & 1\tabularnewline
+\hline 
+0 & 1 & \textcolor{brown}{0} & 0 & 0 & 0 & 1 & \textcolor{brown}{1} & \textcolor{brown}{1} & 1\tabularnewline
+\hline 
+1 & 0 & \textcolor{brown}{0} & 0 & 1 & 1 & 0 & \textcolor{brown}{0} & \textcolor{brown}{1} & 1\tabularnewline
+\hline 
+1 & 1 & \textcolor{brown}{0} & 1 & 0 & 1 & 0 & \textcolor{brown}{1} & \textcolor{brown}{0} & 1\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}
+
+\end{frame}
+
+\begin{frame}{7. Konjunkce}
+
+Tzv. logický souèin.
+
+Popsána pravdivostní tabulkou
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+$x_{1}$ & $x_{2}$ & $f(x_{1},x_{2})$\tabularnewline
+\hline 
+\hline 
+0 & 0 & 0\tabularnewline
+\hline 
+0 & 1 & 0\tabularnewline
+\hline 
+1 & 0 & 0\tabularnewline
+\hline 
+1 & 1 & 1\tabularnewline
+\hline 
+\end{tabular} 
+\par\end{center}
+
+Funkèní hodnota $y=1$, pokud promìnné $x_{1}=x_{2}=1$.
+
+Oznaèení $\wedge$, $\cdot$, logický operátor AND.
+
+Zápis $a\wedge b$ èteme jako ``\texttt{a i b}''. 
+
+\bigskip{}
+
+V programovacích jazycích: and, $\&\&$, $\&$.
+\end{frame}
+
+\begin{frame}{8. Disjunkce}
+
+Tzv. logický souèet.
+
+Popsána pravdivostní tabulkou
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+$x_{1}$ & $x_{2}$ & $f(x_{1},x_{2})$\tabularnewline
+\hline 
+\hline 
+0 & 0 & 0\tabularnewline
+\hline 
+0 & 1 & 1\tabularnewline
+\hline 
+1 & 0 & 1\tabularnewline
+\hline 
+1 & 1 & 1\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}
+
+Poslední øádkem tabulky se disjunkce li¹í od ``obyèejného'' souètu.\bigskip{}
+
+Funkèní hodnota $y=0$, pokud $x_{1}=x_{2}=0$..
+
+Oznaèení $\vee$, $+$, logický operátor OR.
+
+Zápis $a\vee b$ èteme jako ``\texttt{a nebo b}''.
+
+\bigskip{}
+
+V programovacích jazycích: or, $||$, $|$.
+\end{frame}
+
+\begin{frame}{9. Negace konjunkce}
+
+Tzv. Schefferova funkce.
+
+Popsána pravdivostní tabulkou
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+$x_{1}$ & $x_{2}$ & $f(x_{1},x_{2})$\tabularnewline
+\hline 
+\hline 
+0 & 0 & 1\tabularnewline
+\hline 
+0 & 1 & 1\tabularnewline
+\hline 
+1 & 0 & 1\tabularnewline
+\hline 
+1 & 1 & 0\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}
+
+Funkèní hodnota $y=1$, pokud $x_{1}\neq1\vee x_{2}\neq1$. 
+
+\bigskip{}
+
+Vyjádøení operátorem NAND.
+\end{frame}
+
+\begin{frame}{10. Negace disjunkce}
+
+Tzv. Pierceova funkce.
+
+Popsána pravdivostní tabulkou
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+$x_{1}$ & $x_{2}$ & $f(x_{1},x_{2})$\tabularnewline
+\hline 
+\hline 
+0 & 0 & 1\tabularnewline
+\hline 
+0 & 1 & 0\tabularnewline
+\hline 
+1 & 0 & 0\tabularnewline
+\hline 
+1 & 1 & 0\tabularnewline
+\hline 
+\end{tabular} 
+\par\end{center}
+
+Funkèní hodnota $y=1$ pokud $x_{1}\neq0\wedge x_{2}\neq0$.
+
+\bigskip{}
+
+Vyjádøení operátorem NOR.
+\end{frame}
+
+\begin{frame}{11. Nonekvivalence}
+
+Popsána pravdivostní tabulkou
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+$x_{1}$ & $x_{2}$ & $f(x_{1},x_{2})$\tabularnewline
+\hline 
+\hline 
+0 & 0 & 0\tabularnewline
+\hline 
+0 & 1 & 1\tabularnewline
+\hline 
+1 & 0 & 1\tabularnewline
+\hline 
+1 & 1 & 0\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}
+
+Analogie sèítání, oznaèení $\oplus$. 
+
+Funkèní hodnota $y=1$ pokud $x_{1}\neq x_{2}$.\bigskip{}
+
+Vyjádøení operátorem XOR'' (eXlucive OR).
+\end{frame}
+
+\begin{frame}{12. Implikace}
+
+Popsána pravdivostní tabulkou
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline 
+$x_{1}$ & $x_{2}$ & $f(x_{1},x_{2})$\tabularnewline
+\hline 
+\hline 
+0 & 0 & 1\tabularnewline
+\hline 
+0 & 1 & 1\tabularnewline
+\hline 
+1 & 0 & 0\tabularnewline
+\hline 
+1 & 1 & 1\tabularnewline
+\hline 
+\end{tabular}
+\par\end{center}
+
+Dùle¾ité poøadí argumentù: $x_{1}$ pøedpoklad, $x_{2}$ tvrzení.
+
+Lze interpretovat výrokem 
+\begin{lyxcode}
+``Jestli¾e~platí~$x_{1}$,~pak~platí~$x_{2}$''.
+\end{lyxcode}
+Funkèní hodnota $y=0$ , pokud 1. výrok pravdivý a 2. nepravdivý. 
+\end{frame}
+
+
+\section{Základní zákonitosti pøi práci s Booleovskými funkcemi}
+\begin{frame}{13. Priorita booleovských operací}
+
+Vyhodnocování výrazu z leva do prava.
+
+Rùzná priorita (poøadí vyhodnocení) booleovských funkcí.
+
+Analogie s bì¾nými aritmetickými operacemi.
+
+\medskip{}
+
+\textbf{Priorita~booleovských~operací:}
+\begin{enumerate}
+\item Negace.
+\item Konjunkce.
+\item Disjunkce.
+\item Ostatní.
+\end{enumerate}
+\textbf{Zmìna~priorit~operací:}
+
+Prostøednictvím závorek, obdoba aritmetických výrazù. \medskip{}
+
+\textcolor{brown}{Pøíklad: platí ekvivalence?}:
+
+$f(x_{1},x_{2},x_{3},x_{4}):x_{1}+x_{2}\cdot x_{3}+x_{4}\neq(x_{1}+x_{2})\cdot(x_{3}+x_{4})$.
+
+$f(x_{1},x_{2},x_{3},x_{4}):x_{1}\cdot x_{2}+x_{3}\cdot x_{4}=(x_{1}\cdot x_{2})+(x_{3}\cdot x_{4}).$
+\end{frame}
+
+\begin{frame}{14. Booleovské unární zákony}
+
+{\footnotesize Zákon dvojí negace (Double Negation Law):
+\begin{equation}
+\left(x^{\prime}\right)^{\prime}=x.
+\end{equation}
+Zákon vylouèení tøetí mo¾nosti (Complement Law):
+\begin{equation}
+x^{\prime}+x=1.
+\end{equation}
+Zákon sporu (Complement Law):
+\begin{equation}
+x^{\prime}\cdot x=0.
+\end{equation}
+Zákony opakování (Idempotent Law):
+\begin{eqnarray}
+x+x & = & x,\\
+x\cdot x & = & x.
+\end{eqnarray}
+Zákony neutrálnosti (Identity Law):
+\begin{eqnarray}
+x+0 & = & x,\\
+x\cdot1 & = & x.
+\end{eqnarray}
+Zákony agresivnosti (Annulment Law):
+\begin{eqnarray}
+x+1 & = & 1,\\
+x\cdot0 & = & 0.
+\end{eqnarray}
+}{\footnotesize\par}
+\end{frame}
+
+\begin{frame}{15. Booleovské binární zákony (1/2)}
+
+Komutativní zákony (Commutative Laws):
+\begin{eqnarray}
+x_{1}+x_{2} & = & x_{2}+x_{1},\\
+x_{1}\cdot x_{2} & = & x_{2}\cdot x_{1}.
+\end{eqnarray}
+Asociativní zákony (Associative Laws):
+\begin{eqnarray}
+x_{1}+(x_{2}+x_{3}) & = & (x_{1}+x_{2})+x_{3}=x_{1}+x_{2}+x_{3},\\
+x_{1}\cdot(x_{2}\cdot x_{3}) & = & (x_{1}\cdot x_{2})\cdot x_{3}=x_{1}\cdot x_{2}\cdot x_{3}.
+\end{eqnarray}
+Distributivní zákony (Distributive Laws):
+\begin{eqnarray}
+x_{1}\cdot(x_{2}+x_{3}) & = & x_{1}\cdot x_{2}+x_{1}\cdot x_{3},\\
+x_{1}+(x_{2}\cdot x_{3}) & = & (x_{1}+x_{2})\cdot(x_{1}+x_{3}).
+\end{eqnarray}
+
+\end{frame}
+
+\begin{frame}{16. Booleovské binární zákony (2/2)}
+
+{\footnotesize De Morganovy zákony (de Morgan´s Theorem): 
+\begin{eqnarray}
+(x_{1}+x_{2})^{\prime} & = & x_{1}^{\prime}\cdot x_{2}^{\prime},\\
+(x_{1}\cdot x_{2})^{\prime} & = & x_{1}^{\prime}+x_{2}^{\prime}.
+\end{eqnarray}
+Absorpèní zákony (Absorptive Law):
+\begin{eqnarray}
+x_{1}+(x_{1}\cdot x_{2}) & = & x_{1},\\
+x_{1}\cdot(x_{1}+x_{2}) & = & x_{1}.
+\end{eqnarray}
+Zákony absorpce negace (Absorptive Law with Negation):
+\begin{eqnarray}
+x_{1}+(x_{1}^{\prime}\cdot x_{2}) & = & x_{1}+x_{2},\\
+x_{1}\cdot(x_{1}^{\prime}+x_{2}) & = & x_{1}\cdot x_{2}.
+\end{eqnarray}
+\medskip{}
+}{\footnotesize\emph{Dùkaz, }}{\footnotesize Absorptive Law}{\footnotesize\emph{:}}{\footnotesize
+\begin{align*}
+x_{1}+(x_{1}\cdot x_{2}) & =(x_{1}\cdot1)+(x_{1}\cdot x_{2}),\parallel9\\
+ & =x_{1}\cdot(1+x_{2}),\parallel14\\
+ & =x_{1}\cdot1,\parallel8\\
+ & =x_{1}.
+\end{align*}
+}{\footnotesize\par}
+\end{frame}
+
+\begin{frame}{17. Minimalizace booleovské funkce}
+
+{\footnotesize Vycházíme z boolevských zákonù.}{\footnotesize\par}
+
+{\footnotesize Ka¾dou booleovskou funkci lze vyjádøit prostøednictvím
+konjunkce, disjunkce, negace.\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize Pøíklad 1:}{\footnotesize\par}
+
+{\footnotesize
+\begin{align*}
+y=f(x_{1},x_{2},x_{3}) & =x_{1}^{\prime}\cdot x_{2}^{\prime}\cdot x_{3}^{\prime}+x_{1}\cdot x_{2}^{\prime}\cdot x_{3}^{\prime},\\
+ & =x_{2}^{\prime}\cdot x_{3}^{\prime}(x_{1}+x_{1}^{\prime}),\parallel2\\
+ & =x_{2}^{\prime}\cdot x_{3}^{\prime}\parallel7.
+\end{align*}
+}{\footnotesize\par}
+
+{\footnotesize Pøíklad 2:}{\footnotesize\par}
+
+{\footnotesize
+\begin{align*}
+y=f(x_{1},x_{2}) & =[(x_{1}\cdot x_{2})^{\prime}+(x_{1}\cdot x_{2})]^{\prime}+x_{1},\\
+ & =[(x_{1}\cdot x_{2})^{\prime}]{}^{\prime}\cdot(x_{1}\cdot x_{2})^{\prime}+x_{1}\parallel(18),\\
+ & =(x_{1}\cdot x_{2})\cdot(x_{1}\cdot x_{2})^{\prime}+x_{1}\parallel(2),\\
+ & =0+x_{1}\parallel(4),\\
+ & =x_{1}.
+\end{align*}
+}{\footnotesize\par}
+\end{frame}
+
+\begin{frame}{18. Tautologie}
+
+Booleovská formule, je v¾dy pravdivá 
+\[
+f(x_{1},...,x_{n})\rightarrow\{1\}.
+\]
+
+Pro libovolnou kombinaci argumentù nabývá hodnoty pravda. 
+
+Unární / binární zákony pøedstavují tautologie. \bigskip{}
+
+Pou¾ívány pøi posuzování identity vztahù, dùkazech, atd. 
+
+Jednoduchá tautologie (Complement Law)
+\[
+x^{\prime}+x=1
+\]
+
+\textcolor{black}{Podmínky v cyklu/rekurzi: nutno se vyhnout tautologiím. }
+
+\textcolor{black}{Jinak nekoneèný cyklus/rekurze.}
+\end{frame}
+
+\begin{frame}{19. Kontradikce}
+
+Booleovská formule, je\textbf{ }v¾dy nepravdivá
+\[
+f(x_{1},...,x_{n})\rightarrow\{0\}.
+\]
+
+Pro libovolnou kombinaci argumentù nabývá hodnoty nepravda. 
+
+Kontradikce je negací tautologie.
+
+Tautologie je negací kontradikce. \bigskip{}
+
+Jednoduchá kontradikce (Annulment Law)
+\[
+x^{\prime}\cdot x=0.
+\]
+
+\textcolor{black}{Pøi navrhování podmínek v cyklu/rekurze se vyhnout
+kontradikcím. }
+
+\textcolor{black}{Podmínka/cyklus/rekurze se neprovedou.}
+\end{frame}
+
+\begin{frame}[plain]{20. Pøíklad}
+
+{\footnotesize Ovìøte, zda $f(x)$ je tautologie/kontradikce:
+\begin{align*}
+f(x) & =x\cdot(x+(x+x^{\prime}))^{\prime},\\
+ & =x\cdot(x+1)^{\prime}\parallel3,\\
+ & =x\cdot(1^{\prime})\parallel9,\\
+ & =x\cdot0\parallel10,\\
+ & =0.
+\end{align*}
+Funkce $f(x)$ je kontradikcí. }{\footnotesize\par}
+
+{\footnotesize Ovìøte, zda $f(x_{1},x_{2})$ je tautologie/kontradikce:}{\footnotesize\textrm{
+\begin{align*}
+f(x_{1},x_{2}) & =\left[((x_{1}\cdot x_{2})+x_{1})^{\prime}\cdot(x_{1}\cdot(x_{2}+x_{1}))\right]^{\prime},\\
+ & =\left[((x_{1}\cdot x_{2})+x_{1})^{\prime}\cdot(x_{1})\right]^{\prime}\parallel20,\\
+ & =(x_{1}^{\prime}\cdot x_{1})^{\prime}\parallel19,\\
+ & =0^{\prime}\parallel4,\\
+ & =1.
+\end{align*}
+}}{\footnotesize\par}
+
+{\footnotesize Funkce $f(x_{1},x_{2})$ je tautologií.}{\footnotesize\par}
+\end{frame}
+
+
+\section{Stavební prvky algoritmu}
+\begin{frame}{21. Stavební prvky programu}
+
+{\footnotesize ákladní stavební prvky programu, pøíkazy:}{\footnotesize\par}
+\begin{itemize}
+\item {\footnotesize\textcolor{brown}{\emph{Jednoduché pøíkazy }}}{\footnotesize\emph{}}
+
+{\footnotesize\par}{\footnotesize Základní stavební jednotka programu, elementární.}{\footnotesize\par}
+
+{\footnotesize Prázdný pøíkaz: }{\footnotesize\texttt{pass}}{\footnotesize\par}
+
+{\footnotesize Pøiøazovací pøíkaz: }{\footnotesize\texttt{=}}{\footnotesize{} }{\footnotesize\par}
+
+{\footnotesize Pøíkaz skoku: }{\footnotesize\texttt{break, continue}}{\footnotesize{} }{\footnotesize\par}
+
+{\footnotesize Pøíkaz podprogramu (procedury, funkce): }{\footnotesize\texttt{def}}{\footnotesize\par}
+\item {\footnotesize\textcolor{brown}{\emph{Strukturované pøíkazy}}}{\footnotesize\emph{}}
+
+{\footnotesize\par}{\footnotesize Tvoøeny jednoduchými èi dal¹ími pøíkazy.}{\footnotesize\par}
+
+{\footnotesize Slo¾ený pøíkaz (blok): odsazení }{\footnotesize\par}
+
+{\footnotesize Pøíkaz pro vìtvení programu (podmínka): }{\footnotesize\texttt{if-else,
+match-case}}{\footnotesize\par}
+
+{\footnotesize Pøíkaz pro opakování (cyklus): }{\footnotesize\texttt{for,
+while}}{\footnotesize\par}
+\end{itemize}
+{\footnotesize Vzájemnì mohou být kombinovány.}{\footnotesize\par}
+
+{\footnotesize\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize Implementovány prakticky ve v¹ech programovacích jazycích.}{\footnotesize\par}
+
+{\footnotesize Syntaxe +- podobná.}{\footnotesize\par}
+\end{frame}
+
+
+\section{Blok pøíkazù}
+\begin{frame}{22. Blok pøíkazù}
+
+{\scriptsize Posloupnost krokù, které jsou provádìny postupnì v zadaném
+poøadí.}{\scriptsize\par}
+
+{\scriptsize Jednotlivé kroky mohu/nemusí být elementární.}{\scriptsize\par}
+
+{\scriptsize Pou¾it v pøípadì, kdy je nutno provádìt více akcí.\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize Oznaèován jako slo¾ený pøíkaz.}{\scriptsize\par}
+
+{\scriptsize Obsahuje libovolný poèet pøíkazù.\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize Python: odsazení tabelátorem. : uvádí blok.}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize if~x~<~0:~~~~~~~~~~~~~~~~\#~Nasleduje~blok}{\scriptsize\par}
+
+{\scriptsize ~~~~~a~=~10}{\scriptsize\par}
+
+{\scriptsize ~~~~~b~=~2.0~{*}~a}~
+
+{\scriptsize\par}{\scriptsize ~~~~~c~=~a~{*}~a~+~b~{*}~b}{\scriptsize\par}
+
+{\scriptsize ~}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize C/C++/Java: pou¾ity \{\}.}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize if~(x~<~0)~~~~~~~~~~~~~~~//Zacatek~bloku}{\scriptsize\par}
+
+{\scriptsize\{}{\scriptsize\par}
+
+{\scriptsize ~~~~~a~=~10}{\scriptsize\par}
+
+{\scriptsize ~~~~~b~=~2.0~{*}~a;}~
+
+{\scriptsize\par}{\scriptsize ~~~~~c~=~a~{*}~a~+~b~{*}~b;}{\scriptsize\par}
+
+{\scriptsize\}~~~~~~~~~~~~~~~~~~~~~~~~//Konec~bloku}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Pascal, Matlab: begin(), end().}{\scriptsize\par}
+\end{frame}
+
+\begin{frame}[plain]{23. Scope}
+{\tiny}{\tiny\par}
+
+{\scriptsize Ne v¹echny promìnné ``existují'' po celou dobu programu.}{\scriptsize\par}
+
+{\scriptsize U mnoha jazykù souvislost s blokem (neplatí pro Python).}{\scriptsize\par}
+
+{\scriptsize\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize\textbf{Scope (Platnost):}}{\scriptsize\par}
+
+{\scriptsize Úsek (oblast) zdrojového kódu, kde lze promìnnou pou¾ít.}{\scriptsize\par}
+
+{\scriptsize\medskip{}
+}{\scriptsize\emph{Globální promìnné v Pythonu: }}{\scriptsize\par}
+
+{\scriptsize Platnost v souboru + ve v¹ech importovaných (i vnì bloku).}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize a~=~10~~~~~~~~~~~~\#Globalni~promenna}{\scriptsize\par}
+
+{\scriptsize if~x~<~0:~~~~~~~~~~~~~~~}{\scriptsize\par}
+
+{\scriptsize ~~~~~b~=~10~~~~~~~\#Globalni~promenna}{\scriptsize\par}
+
+{\scriptsize print(a)~~~~~~~~~~\#OK,~funguje}{\scriptsize\par}
+
+{\scriptsize print(b)~~~~~~~~~~\#OK,~funguje}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize\emph{Lokální promìnné v Pythonu:}}{\scriptsize\par}
+
+{\scriptsize Platnost v tìle funkce.}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~test():}{\scriptsize\par}
+
+{\scriptsize ~~~~a~=~10~~~~~~~~\#Lokalni~promenna}{\scriptsize\par}
+
+{\scriptsize ~~~~print(a)~~~~~~\#OK,~funguje}{\scriptsize\par}
+
+{\scriptsize ....}{\scriptsize\par}
+
+{\scriptsize test()}{\scriptsize\par}
+
+{\scriptsize print(a)~~~~~~~~~~\#Nefunguje,~mimo~platnost}{\scriptsize\par}
+\end{lyxcode}
+\end{frame}
+
+
+\section{Podmínìné pøíkazy}
+\begin{frame}{24. Pøíkazy pro vìtvení programu}
+
+{\footnotesize Èasto oznaèovány jako øídící struktury.}{\footnotesize\par}
+
+{\footnotesize Patøí k nejèastìji pou¾ívaným konstrukcím.}{\footnotesize\par}
+
+{\footnotesize Reagují na situace, ke kterým dochází v prùbìhu bìhu
+programu. }{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Bývají nazývány}{\footnotesize\emph{ }}{\footnotesize podmínìnými
+pøíkazy: nìco se koná - kdy¾.}{\footnotesize\par}
+
+{\footnotesize Realizují vìtvení algoritmu.}{\footnotesize\par}
+
+{\footnotesize O tom, která vìtev se vykoná, rozhoduje hodnota booleovského
+výrazu.\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Typy podmínek:}{\footnotesize\par}
+\begin{itemize}
+\item {\footnotesize neúplná,}{\footnotesize\par}
+\item {\footnotesize úplná,}{\footnotesize\par}
+\item {\footnotesize kombinovaná.}{\footnotesize\par}
+\end{itemize}
+{\footnotesize Syntakticky podobné ve vìt¹inì programovacích jazykù:
+}{\footnotesize\texttt{if-else}}{\footnotesize .}{\footnotesize\par}
+
+{\footnotesize Podpora}{\footnotesize\texttt{ match-case}}{\footnotesize{}
+(Python 3.10+).}{\footnotesize\par}
+\end{frame}
+
+
+\subsection{Pøíkaz if-else}
+\begin{frame}{25. Neúplná podmínka}
+
+{\scriptsize Pokud booleovský výraz pravdivý, provede se pøíkaz/blok
+pøíkazù.}{\scriptsize\par}
+
+{\scriptsize Neøe¹í se, co dìlat v pøípadì nesplnìní podmínky.}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize if~booleovsky\_vyraz:~\#Pokud~splneno,~proved~prikazy~v~bloku}~
+
+{\scriptsize\par}{\scriptsize ~~~prikaz1}{\scriptsize\par}
+
+{\scriptsize ~~~prikaz2}{\scriptsize\par}
+
+{\scriptsize ~~~...}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize V praxi tato varianta pou¾ívána spí¹e u cyklù.}{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\scriptsize Podmínku uvádìt v ``kladném'' tvaru, ne v negaci!}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize if~x~>~0:~~~~~\#OK~~~~~~~~if~not(x<=10)~~\#Spatne}{\scriptsize\par}
+
+{\scriptsize ~~~x~+=~10}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Vnoøená podmínka: podmínka uvnitø tìla jiné podmínky}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize if~x~<~0:~~}{\scriptsize\par}
+
+{\scriptsize ~~~if~y~>~0:~~~~~~~~~~~~~\#Vnorena~podminka}{\scriptsize\par}
+
+{\scriptsize ~~~~~x~-=~10~~~~~~~~~~~}{\scriptsize\par}
+
+{\scriptsize ~}{\scriptsize\par}
+
+{\scriptsize if~(x~<~0)~and~(y~>~0):~~\#Spojeni~obou~podminek~do~jedne}{\scriptsize\par}
+
+{\scriptsize ~~~x~-=~10~}{\scriptsize\par}
+\end{lyxcode}
+\end{frame}
+
+\begin{frame}[plain]{26. Úplná podmínka}
+
+{\tiny Øíkáme, co se bude dít pøi splnìní/nesplnìní podmínky (øe¹eny
+obì situace).}{\tiny\par}
+
+{\tiny Kromì podmínìného pøíkazu pou¾ití i u rekurze.\medskip{}
+}{\tiny\par}
+
+{\tiny Vznikne roz¹íøením neúplné podmínky o konstrukci }{\tiny\texttt{else}}{\tiny{}
++ blok.}{\tiny\par}
+
+{\tiny Blok vykonán, pokud podmínka nebude splnìna (netestuje se).}{\tiny\par}
+\begin{lyxcode}
+{\tiny if~booleovsky\_vyraz:~\#Pokud~splneno,~proved~prikazy~v~tomto~bloku}~
+
+{\tiny\par}{\tiny ~~~prikaz1}{\tiny\par}
+
+{\tiny ~~~prikaz2}{\tiny\par}
+
+{\tiny ~~~...}{\tiny\par}
+
+{\tiny else:~~~~~~~~~~~~~~~~\#Jinak~proved~prikazy~v~tomto~bloku~~~~~~~~~~~~}{\tiny\par}
+
+{\tiny ~~~prikaz3}{\tiny\par}
+
+{\tiny ~~~prikaz4}{\tiny\par}
+
+{\tiny ~~~...~}{\tiny\par}
+\end{lyxcode}
+{\tiny Pøíklad 1: Ukázka úplné podmínky}{\tiny\par}
+\begin{lyxcode}
+{\tiny if~x~>~0:~~~~}{\tiny\par}
+
+{\tiny ~~~x~+=~10}{\tiny\par}
+
+{\tiny else:}{\tiny\par}
+
+{\tiny ~~~x~-=~10}{\tiny\par}
+\end{lyxcode}
+{\tiny Vnoøená podmínka: }{\tiny\par}
+\begin{lyxcode}
+{\tiny if~x~>~0:}{\tiny\par}
+
+{\tiny ~~~x~+=~10}{\tiny\par}
+
+{\tiny ~~~if~a~>~100:~~~~~~~\#Vnorena~podminka}{\tiny\par}
+
+{\tiny ~~~~~~a~{*}=~10}{\tiny\par}
+
+{\tiny ~~~else:~~~~~~~~~~~~~\#Parovano~s~nejblizsim~if}{\tiny\par}
+
+{\tiny ~~~~~~a/=10}{\tiny\par}
+
+{\tiny else:~~~}{\tiny\par}
+
+{\tiny ~~~x~-=~10}{\tiny\par}
+\end{lyxcode}
+\end{frame}
+
+\begin{frame}[plain]{27. Kombinovaná podmínka}
+
+{\scriptsize Dvì varianty mnohdy nestaèí, výbìr z více }{\scriptsize\textbf{vyluèujících}}{\scriptsize{}
+se variant.}{\scriptsize\par}
+
+{\scriptsize Ka¾dá, s výjimkou poslední, testována.\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize Umo¾òuje realizovat slo¾itìj¹í vìtvení programu: více
+ne¾ 2 varianty.}{\scriptsize\par}
+
+{\scriptsize Pou¾it pøíkaz }{\scriptsize\texttt{elif}}{\scriptsize ,
+zkrácení }{\scriptsize\texttt{else if}}{\scriptsize{} (netypické).}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize if~booleovsky\_vyraz1:~~~~~\#Otestuj~1.~podminku}{\scriptsize\par}
+
+{\scriptsize ~~~prikaz1}{\scriptsize\par}
+
+{\scriptsize ~~~prikaz2}{\scriptsize\par}
+
+{\scriptsize ~~~...}{\scriptsize\par}
+
+{\scriptsize elif~booleovsky\_vyraz2:~~~\#Pokud~nesplnena,~otestuj~2.~podminku}{\scriptsize\par}
+
+{\scriptsize ~~~prikaz3}{\scriptsize\par}
+
+{\scriptsize ~~~prikaz4}{\scriptsize\par}
+
+{\scriptsize ~~~...}{\scriptsize\par}
+
+{\scriptsize elif~booleovsky\_vyraz3:~~~\#Pokud~nesplnena,~otestuj~3.~podminku}{\scriptsize\par}
+
+{\scriptsize ~~~prikaz5}{\scriptsize\par}
+
+{\scriptsize ~~~prikaz6}{\scriptsize\par}
+
+{\scriptsize ~~~...}{\scriptsize\par}
+
+{\scriptsize else:~~~~~~~~~~~~~~~~~~~~~\#Default,~pokud~nesplnena~zadna~z~predchozich}{\scriptsize\par}
+
+{\scriptsize ~~~prikaz7}{\scriptsize\par}
+
+{\scriptsize ~~~prikaz8}{\scriptsize\par}
+
+{\scriptsize ~~~...}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Pozor na poøadí podmínek: roz¹iøující, ne zu¾ující.}{\scriptsize\par}
+\end{frame}
+
+
+\subsection{Ternární operátor}
+\begin{frame}[plain]{28. Ternární operátor}
+
+Operátor má tøi argumenty: 2 hodnoty a výraz.
+
+Umo¾òuje zapsat úplnou podmínku struènìj¹ím, av¹ak ménì pøehledným,
+zpùsobem. 
+\begin{lyxcode}
+hodnota1~if~condition~else~hodnota2;
+\end{lyxcode}
+Je -li výraz vyhodnocen jako pravdivý, je vrácena \texttt{hodnota1},
+jinak \texttt{hodnota2}. {\scriptsize\bigskip{}
+}{\scriptsize\par}
+
+Podmínku
+\begin{lyxcode}
+if~a<b:
+
+~~~c~=~a~+~10
+
+else:
+
+~~~c~=~a~-~10;
+\end{lyxcode}
+lze zapsat jako
+\begin{lyxcode}
+c~=~a+10~if~a<b~else~a-10
+
+c~=~(a+10)~if~a<b~else~(a-10)
+\end{lyxcode}
+Závorky nepovinné, slou¾í pro zdùraznìní podmínky.
+\end{frame}
+
+
+\subsection{Pøíkaz match-case}
+\begin{frame}[plain]{29. Pøíkaz match-case}
+
+{\scriptsize Pøepínaè, vìtvení programu do více vìtví (vyluèující se
+podmínky).}{\scriptsize\par}
+
+{\scriptsize Poèet vìtví není omezen, v ka¾dé vykonán nìjaký pøíkaz. }{\scriptsize\par}
+
+{\scriptsize Pøehlednìj¹í varianta }{\scriptsize\texttt{if-else}}{\scriptsize .}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize match~vyraz:~~~~~~~~~~~~~~~~~~~~~~~~\#Vyraz}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~case~const1:~~~~~~~~~~~~~~~~\#Navesti~1}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~~~~~prikaz}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~case~const2:~~~~~~~~~~~~~~~~\#Navesti~2}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~~~~~prikaz}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~case~\_:~~~~~~~~~~~~~~~~~~~~~\#Navesti~3,~vychozi,~nepovinne~~~~~~~}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~~~~~prikaz}{\scriptsize\par}
+
+\end{lyxcode}
+{\scriptsize Vyhodnocením výrazu celoèíselná hodnota. }{\scriptsize\par}
+
+{\scriptsize Návì¹tí: celoèíselná nebo znaková, unikátní hodnota. }{\scriptsize\par}
+
+{\scriptsize Dle hodnoty návì¹tí provedeny pøíkazy v bloku. }{\scriptsize\par}
+
+{\scriptsize Pokud nenalezeno odpovídající návì¹tí, vykonán kód nacházející
+v návì¹tí }{\scriptsize\texttt{default}}{\scriptsize .}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize match~x:}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~case~'a':~~~~~~~~~~~~~~~~\#if}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~~~~~return~0}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~case~'b':~~~~~~~~~~~~~~~~\#elif}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~~~~~return~1}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~case~\_:~~~~~~~~~~~~~~~~~~\#else}{\scriptsize\par}
+
+{\scriptsize ~~~~~~~~~~~~return~2}{\scriptsize\par}
+\end{lyxcode}
+\end{frame}
+
+\begin{frame}[plain]{30. Pøíklad: kvadratická rovnice}
+
+\begin{lyxcode}
+{\footnotesize import~math}{\footnotesize\par}
+
+{\footnotesize from~math~import~sqrt}{\footnotesize\par}
+
+{\footnotesize ~}{\footnotesize\par}
+
+{\footnotesize a~=~int(input(\textquotedbl a:~\textquotedbl ))~~~\#Standardni~vstup}{\footnotesize\par}
+
+{\footnotesize b~=~int(input(\textquotedbl b:~\textquotedbl ))}{\footnotesize\par}
+
+{\footnotesize c~=~int(input(\textquotedbl c:~\textquotedbl ))}{\footnotesize\par}
+
+{\footnotesize ~}{\footnotesize\par}
+
+{\footnotesize D~=~b~{*}~b~-~4.~{*}~a~{*}~c~~\#Diskriminant}{\footnotesize\par}
+
+{\footnotesize ~}{\footnotesize\par}
+
+{\footnotesize if~D~<~0:~~~~\#0~reseni}{\footnotesize\par}
+
+{\footnotesize ~~~~print~(\textquotedbl Nema~reseni~v~R.\textquotedbl )}{\footnotesize\par}
+
+{\footnotesize ~}{\footnotesize\par}
+
+{\footnotesize elif~D~==~0:~\#1~reseni}{\footnotesize\par}
+
+{\footnotesize ~~~~x~=~(-b~+~sqrt(D))/(2.~{*}~a)}{\footnotesize\par}
+
+{\footnotesize ~~~~print~(\textquotedbl Dvojnasobny~koren:~\textquotedbl ,~x)}{\footnotesize\par}
+
+{\footnotesize ~}{\footnotesize\par}
+
+{\footnotesize else:~~~~~~~~\#2~reseni}{\footnotesize\par}
+
+{\footnotesize ~~~~x1~=~(-b~-~sqrt(D))/(2.~{*}~a)}{\footnotesize\par}
+
+{\footnotesize ~~~~x2~=~(-b~+~sqrt(D))/(2.~{*}~a)}{\footnotesize\par}
+
+{\footnotesize ~~~~print~(\textquotedbl Dva~koreny:~\textquotedbl ,~x1,~\textquotedbl ~a\textquotedbl ,~x2)}{\footnotesize\par}
+\end{lyxcode}
+\end{frame}
+
+
+\end{document}

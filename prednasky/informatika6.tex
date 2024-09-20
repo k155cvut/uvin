@@ -1,0 +1,701 @@
+\documentclass[czech]{beamer}
+\usepackage{helvet}
+\renewcommand{\ttdefault}{lmtt}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Specific LaTeX commands.
+% this default might be overridden by plain title style
+\newcommand\makebeamertitle{\frame{\maketitle}}%
+% (ERT) argument for the TOC
+\AtBeginDocument{%
+  \let\origtableofcontents=\tableofcontents
+  \def\tableofcontents{\@ifnextchar[{\origtableofcontents}{\gobbletableofcontents}}
+  \def\gobbletableofcontents#1{\origtableofcontents}
+}
+\newenvironment{lyxcode}
+  {\par\begin{list}{}{
+    \setlength{\rightmargin}{\leftmargin}
+    \setlength{\listparindent}{0pt}% needed for AMS classes
+    \raggedright
+    \setlength{\itemsep}{0pt}
+    \setlength{\parsep}{0pt}
+    \normalfont\ttfamily}%
+   \def\{{\char`\{}
+   \def\}{\char`\}}
+   \def\textasciitilde{\char`\~}
+   \item[]}
+  {\end{list}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\date{}
+\beamertemplateshadingbackground{red!5}{structure!5}
+
+\usepackage{beamerthemecambridgeus}
+\usepackage{pgfnodes,pgfarrows,pgfheaps}
+\usepackage {multicol}
+
+\beamertemplatetransparentcovereddynamicmedium
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+\title{Funkce.}
+\subtitle{Funkce, metody. Předávání parametrů. Mutable/Immutable objekty. Poziční
+argumenty.}
+\author{Tomáš Bayer | bayertom@fsv.cvut.cz}
+\institute{Katedra geomatiky, fakulta stavební ČVUT.}
+\makebeamertitle
+\begin{frame}{Obsah přednášky}
+
+\tableofcontents{}
+\end{frame}
+
+
+\section{Podprogram}
+\begin{frame}{1. Procedura, funkce, metoda}
+
+{\scriptsize Samostatná část programu konající specializovanou funkci. }{\scriptsize\par}
+
+{\scriptsize Umístěny mimo hlavní program.}{\scriptsize\par}
+
+{\scriptsize Lze opakovaně spouštět z hlavního programu či jiného podprogramu.\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize Tvořeny: }{\scriptsize\par}
+\begin{itemize}
+\item {\scriptsize procedurami, }{\scriptsize\par}
+\item {\scriptsize funkcemi, }{\scriptsize\par}
+\item {\scriptsize metodami.\medskip{}
+}{\scriptsize\par}
+\end{itemize}
+{\scriptsize\textbf{\textcolor{brown}{Výhoda~použití: }}}{\scriptsize\par}
+
+{\scriptsize Zvýšení přehlednosti a čitelnosti programu.}{\scriptsize\par}
+
+{\scriptsize Urychlují vývoj a ladění programu.}{\scriptsize\par}
+
+{\scriptsize Možnost opakovaného provádění výpočtů.\bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize\textbf{\textcolor{brown}{Volání (spuštění):}}}{\scriptsize\par}
+
+{\scriptsize Volány se seznamem parametrů, kterým předány hodnoty potřebné
+pro výpočet.}{\scriptsize\par}
+
+{\scriptsize Většinou vrací nějaký výsledek, tzv. }{\scriptsize\emph{návratová
+hodnota}}{\scriptsize . }{\scriptsize\par}
+
+{\scriptsize Avšak nemusíme předávat žádné údaje popř. žádné výsledky
+nevrací.\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize\textbf{\textcolor{brown}{Procedura~vs.~funkce~vs.~metoda:}}}{\scriptsize\par}
+
+{\scriptsize Některé jazyky nerozlišují funkce/procedury.}{\scriptsize\par}
+
+{\scriptsize Procedura nevrací výsledek, funkce ano.}{\scriptsize\par}
+
+{\scriptsize Metoda obdobou procedury/funkce v OOP.}{\scriptsize\par}
+\end{frame}
+
+
+\section{Funkce a její deklarace}
+\begin{frame}{2. Funkce a její deklarace}
+
+{\scriptsize Před použitím funkce nutná její deklarace.}{\scriptsize\par}
+
+{\scriptsize Tvořena hlavičkou funkce a tělem funkce.}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~jmeno\_funkce(form\_param1,~form\_param2,...):~}{\scriptsize\par}
+
+{\scriptsize ~~~telo~funkce}{\scriptsize\par}
+
+{\scriptsize\medskip{}
+}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize\textbf{\textcolor{brown}{Hlavička funkce:}}}{\scriptsize\par}
+
+{\scriptsize Jméno funkce, typ návratové hodnoty, seznam formálních
+parametrů (FP).}{\scriptsize\par}
+
+{\scriptsize V Pythonu netřeba uvádět datové typy (avšak můžeme, Type
+Hints).}{\scriptsize\par}
+
+{\scriptsize Python neumí přetěžovat funkce.}{\scriptsize\par}
+
+{\scriptsize\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize\textbf{\textcolor{brown}{Tělo funkce:}}}{\scriptsize\par}
+
+{\scriptsize Představuje blok.}{\scriptsize\par}
+
+{\scriptsize Obsahuje výkonný kód funkce.}{\scriptsize\par}
+
+{\scriptsize\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize Jméno (identifikátor) funkce zpravidla psáno malými písmeny.}{\scriptsize\par}
+
+{\scriptsize Voleno tak, aby vyjadřovalo funkcionalitu.}{\scriptsize\par}
+
+{\scriptsize\bigskip{}
+}{\scriptsize\textbf{\textcolor{brown}{Podpora Type Hints: }}}{\scriptsize\par}
+
+{\scriptsize Lze specifikovat typy formálních parametrů i návratový
+typ, kontrola typů. }{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~jmeno\_funkce(form\_param1~:~typ,~form\_param2~:~typ,...)->typ:~\medskip{}
+}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Pouze informační charakter.}{\scriptsize\par}
+\end{frame}
+
+\begin{frame}{3. Volání funkce}
+
+{\tiny = spuštění funkce, tvoří ho:}{\tiny\par}
+\begin{itemize}
+\item {\tiny jméno funkce, }{\tiny\par}
+\item {\tiny seznam skutečných parametrů (SP).}{\tiny\par}
+\end{itemize}
+{\tiny\textbf{\textcolor{brown}{Funkce bez návratové hodnoty:}}}{\tiny\par}
+
+{\tiny Volání funkce}{\tiny\par}
+\begin{lyxcode}
+{\tiny funkce(sp1,~sp2,...)~~~~~\#Pass~n~parameters}{\tiny\par}
+\end{lyxcode}
+{\tiny V některých jazycích deklarace funkce musí předcházet volání.}{\tiny\par}
+
+{\tiny V Pythonu nehraje roli.\medskip{}
+}{\tiny\par}
+
+{\tiny\textbf{\textcolor{brown}{Funkce s návratovou hodnotou/hodnotami}}}{\tiny\emph{:}}{\tiny\par}
+
+{\tiny Funkce v Pythonu schopna vrátit }{\tiny\emph{více hodnot, }}{\tiny netypické
+pro většinu programovacích jazyků.}{\tiny\par}
+
+{\tiny Volání součástí přiřazovacího příkazu}{\tiny\par}
+\begin{lyxcode}
+{\tiny prom1,~prom2,~prom3~=~funkce(sp1,~sp2,~sp3...)~~\#Return~3~parameters}{\tiny\par}
+
+{\tiny prom~=~funkce(sp1,~sp2,~sp3,...)~~~~~~~~~~~~~~~~\#Return~n~parameters~as~tuple}{\tiny\par}
+\end{lyxcode}
+{\tiny V těle funkce klíčové slovo }{\tiny\texttt{return.}}{\tiny\par}
+
+{\tiny Za ním uvedena/y hodnota/y vracená/é funkcí. }{\tiny\par}
+\begin{lyxcode}
+{\tiny def~addsubtract(a,~b):~~~~~~~~\#Declaration}~
+
+{\tiny\par}{\tiny ~~~return~a+b,~a-b~~~~~~~~~~~~\#Return~addition/multiplication~of~2~variables~}{\tiny\par}
+
+{\tiny ~~~a=7~~~~~~~~~~~~~~~~~~~~~~~~\#Unreachable~code}{\tiny\par}
+
+{\tiny ..}{\tiny\par}
+
+{\tiny x1~=~5~~~~~~~~~~~~~~~~~~~~~~~~\#First~variable}{\tiny\par}
+
+{\tiny x2~=~7~~~~~~~~~~~~~~~~~~~~~~~~\#Second~variable}{\tiny\par}
+
+{\tiny x3,~x4~=~addsubtract(x1,~x2)~~\#Function~call~and~assignment}{\tiny\par}
+
+{\tiny >\textcompwordmark >\textcompwordmark >~12}{\tiny\par}
+\end{lyxcode}
+{\tiny Za klíčovým slovem }{\tiny\texttt{return}}{\tiny{} nesmí následovat
+žádný kód. }{\tiny\par}
+
+{\tiny Kód byl by nedostupný}{\tiny\emph{ $\Rightarrow$ }}{\tiny\textcolor{brown}{unreachable
+kód}}{\tiny .}{\tiny\par}
+\end{frame}
+
+\begin{frame}{4. Funkce main()}
+
+{\footnotesize Funkce volána při spuštění programu automaticky (C/C++,
+Java).\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize Můžeme jí předávat argumenty z příkazového řádku.}{\footnotesize\par}
+
+{\footnotesize Nemá žádnou návratovou hodnotu.\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize Výhodou lepší organizace a čitelnost kódu.}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize def~main(args):~~\#Arguments~from~command~line}{\footnotesize\par}
+
+{\footnotesize ~~~pass}{\footnotesize\par}
+\end{lyxcode}
+{\footnotesize Proměnné deklarované uvnitř }{\footnotesize\texttt{main()}}{\footnotesize{}
+jsou lokální. }{\footnotesize\par}
+
+{\footnotesize Proměnné deklarované vně }{\footnotesize\texttt{main()}}{\footnotesize{}
+jsou globální (Python).}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize if~\_\_name\_\_~==~'\_\_main\_\_':}{\footnotesize\par}
+
+{\footnotesize ~~~main(sys.argv)}{\footnotesize\par}
+\end{lyxcode}
+{\footnotesize Soubor test.py lze používat dvěma způsoby:}{\footnotesize\par}
+\begin{enumerate}
+\item {\footnotesize Import ve formě modulu:}{\footnotesize\par}
+
+{\footnotesize Pak }{\footnotesize\texttt{\_\_name\_\_= test}}{\footnotesize{}
+a blok se nevykoná.}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize import~test}{\footnotesize\par}
+\end{lyxcode}
+\item {\footnotesize Přímé spuštění:}{\footnotesize\par}
+
+{\footnotesize Pak }{\footnotesize\texttt{\_\_name\_\_= \_\_name\_\_
+}}{\footnotesize a blok se vykoná.}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize python~test.py}{\footnotesize\par}
+\end{lyxcode}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{5. Formální a skutečné parametry funkce}
+
+{\footnotesize\textbf{\textcolor{brown}{Skutečné~parametry:}}}{\footnotesize\par}
+
+{\footnotesize Použity při volání funkce.}{\footnotesize\par}
+
+{\footnotesize Jejich hodnoty předávány formálním parametrům.}{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize\textbf{\textcolor{brown}{Formální~parametry:}}}{\footnotesize\par}
+
+{\footnotesize Lokální proměnné deklarovány v hlavičce funkce.}{\footnotesize\par}
+
+{\footnotesize Vznikají v okamžiku volání funkce.}{\footnotesize\par}
+
+{\footnotesize Zanikají při ukončení běhu funkce.\medskip{}
+}{\footnotesize\par}
+
+{\footnotesize FP stejného datového typu jako SP. }{\footnotesize\par}
+
+{\footnotesize Jinak provedena implicitní konverze (nelze -li, chyba).}{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Dva způsoby předávání formálních parametrů:}{\footnotesize\par}
+\begin{itemize}
+\item {\footnotesize\emph{hodnotou (Pass by Value)}}{\footnotesize\par}
+
+{\footnotesize Předávána kopie hodnoty FP.}{\footnotesize\par}
+
+{\footnotesize V Pythonu podporováno.}{\footnotesize\par}
+\item {\footnotesize\emph{odkazem (Pass by Reference)}}{\footnotesize\par}
+
+{\footnotesize Předávána reference (tj. ``originální'' proměnná).}{\footnotesize\par}
+
+{\footnotesize Python nepodporuje.}{\footnotesize\par}
+
+{\footnotesize Lze ``obejít''.}{\footnotesize\par}
+\end{itemize}
+\end{frame}
+
+
+\section{Předávání parametrů }
+\begin{frame}{6. Předávání parametrů hodnotou}
+
+{\small FP kopií SP. }{\small\par}
+
+{\small Jakákoliv změna hodnoty FP neovlivní hodnotu SP.}{\small\par}
+
+{\small Originální data nelze ve funkci ``přepsat'' (read only).\bigskip{}
+}{\small\par}
+
+{\small V Pythonu FP předávány }{\small\textbf{\textcolor{brown}{pouze
+hodnotou}}}{\small .}{\small\par}
+
+{\small Předávání~hodnot SP do FP prováděno při volání metody.}{\small\par}
+
+{\small Hodnoty jsou předávány }{\small\emph{postupně:}}{\small\medskip{}
+}{\small\par}
+
+{\small Hodnotě 1. FP předána hodnota 1. SP.}{\small\par}
+
+{\small Hodnotě 2. FP předána hodnota 2. SP.}{\small\par}
+\begin{lyxcode}
+{\small form\_param1=skut\_param1;}{\small\par}
+
+{\small form\_param2=skut\_param2;}{\small\par}
+\end{lyxcode}
+{\small ...}{\small\par}
+
+{\small\medskip{}
+V Pythonu trochu komplikovanější.}{\small\par}
+
+{\small Odlišné chování pro immutable/mutable objects.\medskip{}
+}{\small\par}
+
+{\small Mutable objects: mohou být modifikovány v těle funkce.}{\small\par}
+
+{\small Immutable objects: nemohou být modifikovány v těle funkce.}{\small\par}
+\end{frame}
+
+
+\section{Immutable/Mutable objects}
+\begin{frame}[plain]{7. Immutable/Mutable objekty}
+
+{\scriptsize V Pythonu vše objektem. }{\scriptsize\par}
+
+{\scriptsize Každý objekt má unikátní identifikátor.}{\scriptsize\par}
+
+{\scriptsize Zjištění identifikátoru objektu: příkaz }{\scriptsize\texttt{id()}}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize x=1}{\scriptsize\par}
+
+{\scriptsize id(x)~}{\scriptsize\par}
+
+{\scriptsize >\textcompwordmark >\textcompwordmark >~1613424592~}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize\textbf{\textcolor{brown}{Mutable objekty:}}}{\scriptsize\par}
+
+{\scriptsize Mohou měnit stav/obsah.}{\scriptsize\par}
+
+{\scriptsize V Pythonu: }{\scriptsize\texttt{list, set, dict}}{\scriptsize .\medskip{}
+}{\scriptsize\par}
+
+{\scriptsize\textbf{\textcolor{brown}{Immutable objekty:}}}{\scriptsize\par}
+
+{\scriptsize Nemohou měnit stav/obsah.}{\scriptsize\par}
+
+{\scriptsize V Pythonu vše ostatní: }{\scriptsize\texttt{int, float,
+complex, string, tuple, frozen set}}{\scriptsize .}{\scriptsize\par}
+
+{\scriptsize Při pokus o ``modifikaci'' immutable vytvořen nový objekt.}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize x=x+1}{\scriptsize\par}
+
+{\scriptsize id(x)~}{\scriptsize\par}
+
+{\scriptsize >\textcompwordmark >\textcompwordmark >~1613424608~~~~~~~~\#ID~has~changed,~x~modified~(immutable)}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize U mutable objektů nenastává:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize L={[}1,~2,~3{]}}{\scriptsize\par}
+
+{\scriptsize id(L)~}{\scriptsize\par}
+
+{\scriptsize >\textcompwordmark >\textcompwordmark >~22010856}{\scriptsize\par}
+
+{\scriptsize L{[}0{]}=3~~}{\scriptsize\par}
+
+{\scriptsize >\textcompwordmark >\textcompwordmark >id(L)~}{\scriptsize\par}
+
+{\scriptsize >\textcompwordmark >\textcompwordmark >~22010856~~~~~~~~~~\#ID~unchanged,~L~modified~(mutable)}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Odlišné chování těchto objektů jako parametrů funkcí.}{\scriptsize\par}
+\end{frame}
+
+\begin{frame}[plain]{8. Ukázka předávání SP do FP}
+
+{\scriptsize Ukázka1: Funkce }{\scriptsize\texttt{dist()}}{\scriptsize ,
+formální parametry x1, y1, x2, y2, IO,}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~dist~(x1,~y1,~x2,~y2):~~~~~~~~~~~\#Evaluate~distance}~
+
+{\scriptsize\par}{\scriptsize ~~~dx~=~x2~-~x1~~~~~~~~~~~~~~~~~~~~~~\#Coordinate~diff.~for~x}{\scriptsize\par}
+
+{\scriptsize ~~~dy~=~y2~-~y1~~~~~~~~~~~~~~~~~~~~~~\#Coordinate~diff.~for~y}{\scriptsize\par}
+
+{\scriptsize ~~~return~(dx{*}dx~+~dy{*}dy){*}{*}0.5~~~~~~~\#Return~distance}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Použití TypeHint:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~dist~(x1~:~float,~y1~:~float,~x2~:~float,~y2~:~float)->float:~}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Volání funkce:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize xa~=~0,~ya~=~0,~xb~=~10,~yb~=~10;}{\scriptsize\par}
+
+{\scriptsize d~~=~dist(xa,~ya,~xb,~yb);}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Přiřazení FP do SK:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize provede~se:~x1~=~xa,~y1~=~ya,~x2~=~xb,~y2~=~yb;~~}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Ukázka 2: předání seznamu jako parametru, MU:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~f~(L):~~~~~~~~~~~~~~~~~~~~~~~~~~~\#Pass~list}~
+
+{\scriptsize\par}{\scriptsize ~~~L.append(1)~~~~~~~~~~~~~~~~~~~~~~~\#Append~item~to~the~list}{\scriptsize\par}
+
+{\scriptsize ~~~L.append(2)~~~~~~~~~~~~~~~~~~~~~~~\#Append~item~to~the~list}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Volání funkce:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize S~=~{[}{]}~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\#Create~empty~list}{\scriptsize\par}
+
+{\scriptsize f(S)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\#Call~function~f}{\scriptsize\par}
+
+{\scriptsize ...}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Přiřazení FP do SP:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize provede~se:~L~=~S~}{\scriptsize\par}
+\end{lyxcode}
+\end{frame}
+
+\begin{frame}{9. Předání IO/MO podrobněji...}
+
+{\tiny IO/MO objects jako formální parametry předávány hodnotou.}{\tiny\par}
+
+{\tiny\medskip{}
+}{\tiny\par}
+
+{\tiny\textbf{\textcolor{brown}{Immutable objekty:}}}{\tiny\par}
+
+{\tiny Při pokusu o modifikaci IO v těle funkce se vytvoří jeho kopie.}{\tiny\par}
+
+{\tiny Jeho změna neovlivní původní objekt.}{\tiny\par}
+\begin{lyxcode}
+{\tiny def~f(x):~~~~~~~~~~~~~~~~~~~~~~~def~f(x):~~}{\tiny\par}
+
+{\tiny ~~~print(id(x))~~~~~~~~~~~~~~~~~~~~x=3~~~~~~~~~~~~\#Local~copy}{\tiny\par}
+
+{\tiny ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~print(id(x))~~~\#New~ID}{\tiny\par}
+
+{\tiny ...~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~}{\tiny\par}
+
+{\tiny x~=~1~~~~~~~~~~~~~~~~~~~~~~~~~~~x~=~1~~~~~~~~~~~~}{\tiny\par}
+
+{\tiny print(id(x))~~~~~~~~~~~~~~~~~~~~print(id(x))~}{\tiny\par}
+
+{\tiny f(x)~~~~~~~~~~~~~~~~~~~~~~~~~~~~f(x)~~~~~~~~~~~~~~\#x~can~not~be~modified~inside~f}{\tiny\par}
+
+{\tiny print(x)~~~~~~~~~~~~~~~~~~~~~~~~print(x)}{\tiny\par}
+
+{\tiny >\textcompwordmark >~1946910832~~~~~~~~~~~~~~~~~~~>\textcompwordmark >~1946910824}{\tiny\par}
+
+{\tiny >\textcompwordmark >~1946910832~~~~~~~~~~~~~~~~~~~>\textcompwordmark >~1946910832}{\tiny\par}
+
+{\tiny >\textcompwordmark >~1~~~~~~~~~~~~~~~~~~~~~~~~~~~~>\textcompwordmark >~1~~~~~~~~~~~~~~\#Value~has~not~changed}{\tiny\par}
+\end{lyxcode}
+{\tiny\medskip{}
+}{\tiny\par}
+
+{\tiny\textbf{\textcolor{brown}{Mutable objekty:}}}{\tiny\par}
+
+{\tiny Mohou měnit stav/obsah.}{\tiny\par}
+
+{\tiny V těle funkce mohou být modifikovány.}{\tiny\par}
+\begin{lyxcode}
+{\tiny def~f(L):~~~~~~~~~~~~~~~~~~~~~~~def~f(L):~~}{\tiny\par}
+
+{\tiny ~~~print(id(L))~~~~~~~~~~~~~~~~~~~~L{[}0{]}=3~~~~~~~~\#Modify~object}{\tiny\par}
+
+{\tiny ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~print(id(l))~~\#ID~has~not~changed}{\tiny\par}
+
+{\tiny .}{\tiny\par}
+
+{\tiny L~=~{[}1,~2{]}~~~~~~~~~~~~~~~~~~~~~~L~=~{[}1,~2{]}}{\tiny\par}
+
+{\tiny print(id(L))~~~~~~~~~~~~~~~~~~~~print(id(L))~}{\tiny\par}
+
+{\tiny f(L)~~~~~~~~~~~~~~~~~~~~~~~~~~~~f(L)~~~~~~~~~~~~~\#L~was~modified~inside~f}{\tiny\par}
+
+{\tiny print(L)~~~~~~~~~~~~~~~~~~~~~~~~print(L)}{\tiny\par}
+
+{\tiny >\textcompwordmark >~1946910817~~~~~~~~~~~~~~~~~~~>\textcompwordmark >~1946910817}{\tiny\par}
+
+{\tiny >\textcompwordmark >~1946910817~~~~~~~~~~~~~~~~~~~>\textcompwordmark >~1946910817}{\tiny\par}
+
+{\tiny >\textcompwordmark >~{[}1,~2{]}~~~~~~~~~~~~~~~~~~~~~~~>\textcompwordmark >~{[}3,~2{]}~~~~~~~~\#Values~have~changed}{\tiny\par}
+\end{lyxcode}
+\end{frame}
+
+\begin{frame}{10. Předávání parametrů odkazem}
+
+{\footnotesize Při předávání nevzniká kopie skutečného parametru.}{\footnotesize\par}
+
+{\footnotesize Formální i skutečný parametr pak odkazují na stejnou
+proměnnou}{\footnotesize\emph{.}}{\footnotesize\par}
+
+{\footnotesize V Pythonu nepodporováno, lze však ``obejít'' s mutable
+objekty.}{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Změna hodnoty FP uvnitř fce změní hodnoty SP.}{\footnotesize\par}
+
+{\footnotesize Možnost ``přepsání'' hodnot volajících dat.}{\footnotesize\par}
+
+{\footnotesize Menší nároky na HW, netřeba vytvářet kopie objektů.}{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Praktická realizace: ``obejít'' lze předání parametrů
+v seznamu.}{\footnotesize\par}
+
+{\footnotesize Ve skutečnosti opět předáváme referenci, modifikujeme
+prvky seznamu.}{\footnotesize\par}
+
+{\footnotesize\bigskip{}
+}{\footnotesize\par}
+
+{\footnotesize Ukázka: prohození dvou čísel (využití mutable)}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize def~function~swap(x):}{\footnotesize\par}
+
+{\footnotesize ~~~temp~=~x{[}0{]}~~~~~~~~\#Create~temp.~variable,~store~first}{\footnotesize\par}
+
+{\footnotesize ~~~x{[}0{]}~=~x{[}1{]}~~~~~~~~\#Copy~second~to~first}{\footnotesize\par}
+
+{\footnotesize ~~~x{[}1{]}~=~temp~~~~~~~~\#Copy~first}{\footnotesize\par}
+\end{lyxcode}
+{\footnotesize Volání funkce:}{\footnotesize\par}
+\begin{lyxcode}
+{\footnotesize a~=~{[}1,~2{]}~~~~~~~~~~~~\#Create~list~of~2~items}{\footnotesize\par}
+
+{\footnotesize swap(a)~~~~~~~~~~~~~~~\#Swap~items}{\footnotesize\par}
+\end{lyxcode}
+\end{frame}
+
+
+\section{Výchozí hodnoty parametrů}
+\begin{frame}{11. Výchozí hodnoty parametrů}
+
+{\scriptsize FP mohou mít definovány výchozí hodnoty.}{\scriptsize\par}
+
+{\scriptsize Ukázka:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~dist1d~(dx,~dy~=~0):~~~~~~\#1~FP~is~default}{\scriptsize\par}
+
+{\scriptsize ~~~return~(dx~{*}~dx~+~dy~{*}~dy){*}{*}0.5}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Ukázka:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~dist2d~(dx~=~0,~dy~=~0):~~\#2~FPs~are~default}{\scriptsize\par}
+
+{\scriptsize ~~~return~(dx~{*}~dx~+~dy~{*}~dy){*}{*}0.5}{\scriptsize\par}
+
+\end{lyxcode}
+{\scriptsize Funkce lze spustit s:}{\scriptsize\par}
+\begin{enumerate}
+\item {\scriptsize hodnotami skutečných parametrů}{\scriptsize\par}
+
+{\scriptsize Mají vyšší prioritu než výchozí hodnoty FP.}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize d~=~dist1d(5,~6)~\#dx~=~5,~dy~=~6}{\scriptsize\par}
+
+{\scriptsize d~=~dist2d(5,~6)~\#dx~=~5,~dy~=~6}{\scriptsize\par}
+\end{lyxcode}
+\item {\scriptsize výchozími hodnotami formálních parametrů}{\scriptsize\par}
+
+{\scriptsize SP dosazeny za FP:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize d~=~dist2d()~~~~~\#dx~=~0,~dy~=~0}{\scriptsize\par}
+\end{lyxcode}
+\item {\scriptsize Kombinace 1) + 2)}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize d~=~dist1d(5)~~~~\#dx~=~5,~dy~=~0}{\scriptsize\par}
+
+{\scriptsize d~=~dist2d(5)~~~~\#dx~=~5,~dy~=~0}{\scriptsize\par}
+\end{lyxcode}
+\end{enumerate}
+\end{frame}
+
+
+\section{Předávání funkcí jako parametrů}
+\begin{frame}{12. Předávání funkcí jako parametrů}
+
+{\scriptsize Funkce mohou být předávány jako parametry jiné funkci.}{\scriptsize\par}
+
+{\scriptsize Předaná funkce volána se stejným počtem FP (podobný princip
+jako u proměnných).}{\scriptsize\par}
+
+{\scriptsize Tento mechanismus není běžný u jiných programovacích jazyků
+(C++, pointer to function).\bigskip{}
+}{\scriptsize\par}
+
+{\scriptsize Příklad: Výpočet kombinačního čísla:
+\[
+C=\left(\begin{array}{c}
+n\\
+k
+\end{array}\right)=\frac{n!}{(n-k)!k!}.
+\]
+}{\scriptsize\par}
+
+{\scriptsize Faktoriál:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~fact(n):~~~~~~~~\#fact~has~one~parameter}{\scriptsize\par}
+
+{\scriptsize ~~~f~=~1}{\scriptsize\par}
+
+{\scriptsize ~~~while~n~>~1:}{\scriptsize\par}
+
+{\scriptsize ~~~~~~f~{*}=~n~~~~~}{\scriptsize\par}
+
+{\scriptsize ~~~~~~n~-=~1}{\scriptsize\par}
+
+{\scriptsize ~~~return~f~~~}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Kombinační číslo:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~comb(n,~k,~f)}{\scriptsize\par}
+
+{\scriptsize ~~~return~f(n)~/~(f(n~-~k)~{*}~f(k))~~~\#f~has~1~parameter~as~fact}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Volání:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize c=comb(5,~3,~fact)}{\scriptsize\par}
+\end{lyxcode}
+\end{frame}
+
+
+\section{Poziční argumenty}
+\begin{frame}[plain]{13. Poziční argumenty}
+
+{\scriptsize V Pythonu může být libovolný počet FP zastoupen}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize{*}args~~~~~{*}{*}kwargs}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Použiváno v případě, kdy není znám počet FP.}{\scriptsize\par}
+
+{\scriptsize Po předání vytvořena $n$-tice {*} nebo slovník {*}{*}.}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~sum({*}nums):~~~~~~~~~~~~~~~~~~def~write({*}{*}items)}{\scriptsize\par}
+
+{\scriptsize ~~~s~=~0~~~~~~~~~~~~~~~~~~~~~~~~~~~~~for~it~in~items:~}{\scriptsize\par}
+
+{\scriptsize ~~~for~num~in~nums:~~~~~~~~~~~~~~~~~~~~~~print(it,~items{[}it{]})~~\#Key,~value}{\scriptsize\par}
+
+{\scriptsize ~~~~~~s~+=~num~~~~~~~~}{\scriptsize\par}
+
+{\scriptsize ~~~return~s~~~}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Volání funkce:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize s~=~sum(1,~2,~3,~4)~~~~~~~~~~~~~~~~~~~~~~~~~~~\#Add~4~numbers}{\scriptsize\par}
+
+{\scriptsize write~(name='Jan',~surname='Novak',~age=25)~~~\#Print~database}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Poziční argumenty mohou být kombinovány s ``obyčejným''i:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize def~f(a,~b=100,~{*}c,~{*}{*}d):}{\scriptsize\par}
+
+{\scriptsize ~~~...}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Volání funkce:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize f(1,~2,~3,~4,~e=5,~f=6,~g=7)~~}{\scriptsize\par}
+\end{lyxcode}
+{\scriptsize Pak:}{\scriptsize\par}
+\begin{lyxcode}
+{\scriptsize >\textcompwordmark >a=1,~b=100,~c~=~(2,3,4),~d~=~\{e:5,~f:6,~g:7\}}{\scriptsize\par}
+\end{lyxcode}
+\end{frame}
+
+
+\end{document}
