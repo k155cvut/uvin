@@ -1,0 +1,127 @@
+\documentclass[landscape, 12pt]{article}
+\usepackage[table, svgnames, dvipsnames]{xcolor}
+\usepackage{longtable}
+\usepackage[a4paper, landscape, margin=1cm,]{geometry}
+
+\pagestyle{empty}
+
+\usepackage{makecell, cellspace, caption}
+\setlength\cellspacetoplimit{3pt}
+\setlength\cellspacebottomlimit{3pt}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\begin{document}
+
+\section*{Hodnocení bodovaných úloh UVIN (5. cvičení)}
+       
+        \begin{longtable}{|l l | C{0.7cm} | C{0.7cm} | C{0.7cm} | C{0.7cm} | C{0.7cm} | L{15cm} |c|}
+\hline
+    & Student            &   Př. 1 &   Př. 2 &   Př. 3 &   Př. 4 &   Př. 5 & Komentáře                                                                                                                                                                                                                                                                                                                                                                               &   Celkem \\
+\hline
+  0 & Balková Eliška     &       5 &       5 &       5 &       5 &       5 &                                                                                                                                                                                                                                                                                                                                                                                      &       25 \\
+\hline
+
+  1 & Bauer Michal       &       ? &       ? &       ? &       ? &       3 & 1: Neopakuje ulohu v pripade nevalidniho vstupu, provadi vypocet i pro zadanou 0. 3: Vypocet je proveden i pro nulu, prestoze se nejedna o kladne cislo. 4: randrange generuje nahodna čísla \ensuremath{<}start, stop) 5: Nevykresluje vlocku ale Kochovu krivku. Totozne s Stejskalem - nutne vysvetlit duvod nadmerne podobnosti reseni - komu pripsat body?                                                                                                                                                        &       3 \\
+\hline
+
+  2 & Bělovský Maxim     &       5 &       5 &       5 &       5 &       5 &                                                                                                                                                                                                                                                                                                                                                                                      &       25 \\
+
+  \hline
+3 & Červenka Adam      &       5 &       5 &       3 &       5 &       5 & 3: Vypocet je proveden i pro nulu, prestoze se nejedna o kladne cislo.                                                                                                                                                                                                                                                                                                                  &       23 \\
+\hline
+
+4 & Číha Jiří          &       1 &       5 &       5 &       5 &       5 & 1: Nelze spustit. Chybí deklarace funkce, která je později v kódu použita.                                                                                                                                                                                                                                                                                                              &       21 \\
+\hline
+
+5 & Dammerová Veronika &       5 &       5 &       5 &       0 &       0 & Porušeno zadání: řešení mělo být odevzdáno jako skript (*.py) a ne jako Jupyter Notebook (*.ipynb). Vyjíměčně přijato k hodnocení. Vytvaret dokument s postupem nebylo soucasti zadani. 3: Vypocet je proveden i pro nulu, prestoze se nejedna o kladne cislo.                                                                                      &        15 \\
+\hline
+
+6 & Derka Adam         &       5 &       5 &       5 &       5 &       0 &                                                                                                                                                                                                                                                                                                                                                                                      &       20 \\
+\hline
+
+7 & Doubková Markéta   &       3 &       5 &       0 &       3 &       0 & 1: V pripade vstupu, ktery neni cele cislo, konci chybou. I pri nevalidnim vstupu pocita soucet. 4: V pripade vstupu, ktery neni cele cislo, konci chybou.                                                                                                                                                                                                                                          &       11 \\
+\hline
+
+8 & Hejnová Barbora    &       3 &       5 &       3 &       3 &       5 & 1: V pripade vstupu, ktery neni cele cislo, konci chybou. Pri zadane nule, tvrdi, ze jde o zaporne cislo. 3: Pri neciselnem vstupu konci chybou.  4: V pripade vstupu, ktery neni cele cislo, konci chybou.                                                                                                                                                                                         &       19 \\
+\hline
+
+  9 & Holubová Vendula   &       5 &       5 &       5 &       5 &       5 &                                                                                                                                                                                                                                                                                                                                                                                      &       25 \\
+\hline
+
+  10 & Horňák Jan         &      5 &       5 &       5 &       5 &       5 & Porušeno zadání: řešení mělo být odevzdáno jako skript (*.py) a ne jako Jupyter Notebook (*.ipynb). To, že odezdáte obsah Jupyter Notebooku v souboru s příponou py z něj nedělá skript. Notebook je nutné exportovat (Download as -\ensuremath{>} Python). Vyjíměčně přijato k hodnocení. 3: Vypocet je proveden i pro nulu, prestoze se nejedna o kladne cislo. &       25 \\
+\hline
+
+  11 & Hoznédl Vojtěch    &       1 &       5 &       3 &       1 &       1 & 1: Neopakuje ulohu v pripade nevalidniho vstupu. V pripade vstupu, ktery neni cislo, konci chybou. 3: Pri neciselnem vstupu konci chybou. 4: V pripade vstupu, ktery neni cele cislo, konci chybou. Duplicita kodu, reseni neni obecne. 5: Nejde spustit: AttributeError: 'int' object has no attribute 'forward'                                                                                   &       11 \\
+\hline
+
+  12 & Jarošová Kristýna  &       3 &       5 &       3 &       3 &       0 & 1: V pripade vstupu, ktery neni cele cislo, konci chybou. Pri zadane nule, tvrdi, ze jde o zaporne cislo. 3: Pri neciselnem vstupu konci chybou. 4: V pripade vstupu, ktery neni cele cislo, konci chybou.                                                                                                                                                                                          &       14 \\
+\hline
+
+  13 & Jursík Jan         &       0 &       5 &       0 &       5 &       5 &                                                                                                                                                                                                                                                                                                                                                                                      &       15 \\
+\hline
+
+  14 & Kavan Ondřej       &       5 &       ? &       ? &       ? &       ? & 4: V pripade vstupu, ktery neni cele cislo, konci chybou. 5: Vykresluje vice vlocek, na hodnoceni ale nema vliv.       Totozne s Pipkem - nutne vysvetlit duvod nadmerne podobnosti reseni - komu pripsat body?                                                                                                                                                                                                                                                                                             &       5 \\
+\hline
+
+  15 & Kavena Ondřej      &       5 &       5 &       3 &       5 &       5 & 3: Vypocet je proveden i pro nulu, prestoze se nejedna o kladne cislo.                                                                                                                                                                                                                                                                                                                  &       23 \\
+\hline
+
+  16 & Lukešová Julie     &       3 &       5 &       3 &       3 &       0 & 1: V pripade vstupu, ktery neni cele cislo, konci chybou. 3: Vypocet je proveden i pro nulu, prestoze se nejedna o kladne cislo. 4: V pripade vstupu, ktery neni cele cislo, konci chybou.                                                                                                                                                                                                          &       14 \\
+\hline
+
+  17 & Luxová Josefína    &       5 &       5 &       5 &       5 &       0 &                                                                                                                                                                                                                                                                                                                                                                                      &       20 \\
+\hline
+
+  18 & Madera Maroš       &       1 &       5 &       3 &       5 &       0 & 1: Neopakuje ulohu v pripade nevalidniho vstupu, provadi vypocet i pro zadanou 0. 3: Vypocet je proveden i pro nulu, prestoze se nejedna o kladne cislo.                                                                                                                                                                                                                                &       14 \\
+\hline
+
+  19 & Naar Šimon         &       3 &       5 &       3 &       3 &       5 & 1: V pripade vstupu, ktery neni cele cislo, konci chybou. 3: V pripade vstupu, ktery neni cele cislo, konci chybou. 4: V pripade vstupu, ktery neni cele cislo, konci chybou. 5: Skript navic umoznuje zvolit uroven Kochovy vlocky.                                                                                                                                                                      &       19 \\
+\hline
+
+  20 & Nesrsta Tomáš      &       1 &       3 &       3 &       3 &       0 & 1: Neopakuje ulohu v pripade nevalidniho vstupu, provadi vypocet pro pevne zadanou hodnotu. 2: Vstupni hodnota pevne zadana. 3: V pripade vstupu, ktery neni cele cislo, konci chybou. 4: V pripade vstupu, ktery neni cele cislo, konci chybou.                                                                                                                                                    &       10 \\
+\hline
+
+  21 & Pančíková Veronika &       5 &       5 &       5 &       5 &       5 & Skript by měl mít příponu .py.                                                                                                                                                                                                                                                                                                                                                          &       25 \\
+\hline
+
+  22 & Petrásková Zuzana  &       3 &       5 &       3 &       4 &       0 & 1: V pripade vstupu, ktery neni cele cislo, konci chybou. 3: V pripade vstupu, ktery neni cele cislo, konci chybou. 4: V pripade vstupu, ktery neni cele cislo, konci chybou.                                                                                                                                                                                                                             &       15 \\
+\hline
+
+  23 & Pícha Jonáš        &       3 &       5 &       3 &       3 &       5 & 1: V pripade vstupu, ktery neni cele cislo, konci chybou. 3: V pripade vstupu, ktery neni cele cislo, konci chybou. 4: V pripade vstupu, ktery neni cele cislo, konci chybou.                                                                                                                                                                                                                             &       19 \\
+\hline
+
+  24 & Pidsan Anastasiia  &       5 &       5 &       5 &       5 &       5 &                                                                                                                                                                                                                                                                                                                                                                                      &       25 \\
+\hline
+
+  25 & Pipek Jakub        &       3 &       ? &       ? &       ? &       ? & 1: V pripade vstupu, ktery neni cele cislo, konci chybou. 4: V pripade vstupu, ktery neni cele cislo, konci chybou. 5: Vlocka (ve vasem pripade vice vlocek) je vykreslovano mimo okno.                                                                                                                Totozne s Kavanem - nutne vysvetlit duvod nadmerne podobnosti reseni - komu pripsat body?                                                                                                                   &       3 \\
+\hline
+
+  26 & Salvet Jakub       &       1 &       5 &       5 &       5 &       5 & 1: Neopakuje ulohu v pripade nevalidniho vstupu.                                                                                                                                                                                                                                                                                                                                        &       21 \\
+\hline
+
+  27 & Stejskal Michal    &       ? &       ? &       ? &       ? &       0 & 1: Neopakuje ulohu v pripade nevalidniho vstupu, provadi vypocet i pro zadanou 0. 3: Vypocet je proveden i pro nulu, prestoze se nejedna o kladne cislo. 4: randrange generuje nahodna čísla \ensuremath{<}start, stop). Totozne s Baurem - nutne vysvetlit duvod nadmerne podobnosti reseni - komu pripsat body?                                                                                                                                                                                  &       0 \\
+\hline
+
+  28 & Stelšovský Karel   &       5 &       5 &       5 &       5 &       5 &                                                                                                                                                                                                                                                                                                                                                                                      &       25 \\
+\hline
+
+  29 & Švec Petr          &       1 &       3 &       0 &       0 &       5 & 1: Vstupní hodnota pevně zadaná, vede k nekonečnému cyklu. 2: Vstupni hodnota pevne zadana.                                                                                                                                                                                                                                                                                             &        9 \\
+\hline
+
+  30 & Trojanová Viktorie &       5 &       5 &       3 &       5 &       5 & 3: Vypocet je proveden i pro nulu, prestoze se nejedna o kladne cislo.                                                                                                                                                                                                                                                                                                                  &       23 \\
+\hline
+
+  31 & Urban Matyáš       &       5 &       5 &       3 &       5 &       0 & 3: Vypocet je proveden i pro nulu, prestoze se nejedna o kladne cislo.                                                                                                                                                                                                                                                                                                                  &       18 \\
+\hline
+
+  32 & Voksa Matěj        &       0 &       3 &       0 &       3 &       0 & 2: Vypis neni zcela v poradku (['*', '*'] namisto '**'). 4: V pripade vstupu, ktery neni cele cislo, konci chybou.                                                                                                                                                                                                                                                                            &        6 \\
+\hline
+
+  33 & Zedek Miroslav     &       1 &       5 &       3 &       3 &       5 & 1: Vstupní hodnota pevně zadaná, vede k nekonečnému cyklu. Nekontroluje validnost vstupu, v pripade, ze vstup neni cele cislo. 3: Vypocet je proveden i pro nulu, prestoze se nejedna o kladne cislo. 4: Program nevypisuje pocet pokusu.                                                                                                                                               &       17 \\
+\hline
+        \end{longtable}
+     
+%\end{landscape}
+\end{document} 
