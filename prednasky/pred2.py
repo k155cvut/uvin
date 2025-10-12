@@ -214,7 +214,7 @@ NameError: name 'x' is not defined
 >>> print(c)
 11
 
-#Arithmetic operators
+#Arithmetic operators 
 >>> 3+3*3
 12
 >>> 2/3
