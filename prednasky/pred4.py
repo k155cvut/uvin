@@ -1,42 +1,89 @@
-#print(a)
-a = 10  
-print(a)
-b = 20
-print(a)
-print(b)
+#True and false
+True
+True
+False
+False
+int(True)
+1
+int(False)
+0
 
-def test():
-    c = 30
-    print(c)
-    
-test()
-#print(c)
+#Not
+not(True)
+False
+not(False)
+True
 
-x = -10
+#And
+0 and 0
+0
+0 and 1
+0
+1 and 0
+0
+1 and 1
+1
 
-if x > 0:
-    x = x + 30
+#Or
+0 or 0
+0
+0 or 1
+1
+1 or 0
+1
+1 or 1
+1
 
-print(x)
+#Equivalence
+0 == 0
+True
+0 == 1
+False
+1 == 0
+False
+1 == 1
+True
 
-a = 4
-b = 5
-c = 10
+#Partial condition
+week = 37
 
-D = b*b - 4*a*c
+if week%2==0:
+    print('Lecture')
 
-#Two real roots x1 != x2
-if D > 0:
-    x1 = (-b + D**0.5) / (2 * a)
-    x2 = (-b - D**0.5) / (2 * a)
-    print('2 real roots:',x1, x2)
-    
-#One real root
-elif D == 0:
-    x1 = -b / (2*a)
-    print('1 real root:',x1)
-    
+#Full condition
+if week%2==0:
+    print('Lecture')
 else:
-    print('No real root:')
+    print('Seminar')
+    
+#Nested condition
+holiday = False
+if not(holiday):
+    if week%2==0:
+        print('Lecture')
+    else:
+        print('Seminar')
 
-print('end...')  
+#Solve quadratic equation
+a = 1
+b = 4
+c = 5
+
+#Compute discriminant
+D = b * b - 4 * a *c
+
+#Two different roots
+if D > 0:
+    x1 = (-b + D**(0.5)) / (2*a)
+    x2 = (-b - D**(0.5)) / (2*a)
+    print (x1, x2)
+
+#Double root
+elif D==0:
+    x1 = (-b) / (2*a)
+    x2 = x1
+    print (x1, x2)
+
+#No solution in R
+else:
+    print('No solution in R')
