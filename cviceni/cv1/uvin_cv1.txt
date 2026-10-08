@@ -1,0 +1,117 @@
+Postup:
+1. Vytvořerní SS
+2. Nakresli A
+3. Spočteme souřadnicové rozdíly
+4. Přičteme souř. rozdíly
+5. Nakresli bod B
+¨
+1. Create coordinate system
+2. Draw point A
+3. Calculate coordinate differencies
+4. Add coordinate differencies
+5. Draw point B
+
+Algorithm:
+In: A=[xa, ya], shift 5 cm right, 3 cm up
+Out: B=[xb, yb]
+1. create(coordinate system)
+2. draw(xa, ya)
+3. dx = 0.05, dy = 0.03
+4. xb = xa+dx, yb = ya +dy
+5. draw(xb, yb) 
+
+Algorithm:
+In: A=[xa, ya], delta_x, delta_y
+Out: B=[xb, yb]
+1. create(coordinate system)
+2. draw(xa, ya)
+3. dx = delta_x, dy = delta_y
+4. xb = xa+dx, yb = ya +dy
+5. draw(xb, yb) 
+
+Task 1: Deg, min, sec (positive numbers)
+**********************
+Input: deg, min, sec
+Output: alpha in R
+
+12 deg, 20 min, 35.46 sec
+
+alpha = 12 + 20/60+35.46/3600
+
+alpha = deg + min/60 + sec/3600
+
+Task 1: Deg, min, sec (positive/negative numbers)
+**********************
+Input: deg, min, sec
+Output: alpha in R
+deg >=0:
+	alpha = deg + min/60 + sec/3600
+deg < 0:
+	alpha = deg - min/60 - sec/3600
+
+Task 2: rectangle
+**********************
+Input: A=[xa, ya], B=[xb, yb], P=[xp, yp]
+Output: P in/out rectangle(A,B)
+
+1. xp between xa and xb
+xp > xa and xp < xb
+xa < xp < xb
+
+2. yp between ya and yb
+yp > ya and yp < yb
+ya < yp < yb
+
+3. Position
+Point P inside rectangle(A,B):
+	(xp > xa and xp < xb) and (yp > ya and yp < yb)
+	((xp > xa) and (xp < xb)) and ((yp > ya) and (yp < yb))
+Else:
+	P outside rectangle(A,B):
+
+
+Task 2: rectangle, v2
+**********************
+Input: A=[xa, ya], B=[xb, yb], P=[xp, yp]
+Output: P in/out/boundary rectangle(A,B)
+
+1. xp between xa and xb
+xp > xa and xp < xb
+xa < xp < xb
+
+2. yp between ya and yb
+yp > ya and yp < yb
+ya < yp < yb
+
+3. Position
+Point P inside rectangle(A,B):
+	(xp > xa and xp < xb) and (yp > ya and yp < yb)
+	((xp > xa) and (xp < xb)) and ((yp > ya) and (yp < yb))
+Point P on the  boundary of the rectangle(A,B):
+Else:
+	P outside rectangle(A,B):
+
+		xa <= xp <= xb  and yp == ya  (bottom)
+				or
+		xa <= xp <= xb  and yp == yb	(upper)
+				or
+		ya <= yp <= yb  and xp == xa  (left)
+				or
+		ya <= yp <= yb  and xp == xa  (left)
+
+
+
+Task 3: angle v1
+**********************	
+Input: alpha in R
+Output: 0 < alpha < 360
+
+1. alpha > 360:
+	alpha = alpha - 360
+   alpha < -360:
+	alpha = abs(alpha)
+	alpha = alpha - 360
+
+ 
+
+
