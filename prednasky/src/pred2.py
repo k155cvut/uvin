@@ -1,5 +1,4 @@
-Python 3.10.0 (tags/v3.10.0:b494f59, Oct  4 2021, 19:00:18) [MSC v.1929 64 bit (AMD64)] on win32
-Type "help", "copyright", "credits" or "license" for more information.
+#Basic types
 >>> 5
 5
 >>> type(5)
@@ -36,6 +35,8 @@ NameError: name 'false' is not defined. Did you mean: 'False'?
 <class 'str'>
 >>> type("hello world")
 <class 'str'>
+
+#Domain and accuracy
 >>> sqrt(9)
 Traceback (most recent call last):
   File "<stdin>", line 1, in <module>
@@ -160,17 +161,8 @@ True
 1e+20
 >>> x + (y+z)
 1e+20
->>> 'a'
-'a'
->>> int('a']
-  File "<stdin>", line 1
-    int('a']
-           ^
-SyntaxError: closing parenthesis ']' does not match opening parenthesis '('
->>> int('a')
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-ValueError: invalid literal for int() with base 10: 'a'
+
+#Strings
 >>> 'a'
 'a'
 >>> "a"
@@ -206,6 +198,8 @@ Hello " world
 SyntaxError: unterminated string literal (detected at line 1)
 >>> print("Hello \" world")
 Hello " world
+
+#Variables
 >>> a=2
 >>> type(a)
 <class 'int'>
@@ -219,10 +213,6 @@ Hello " world
 False
 >>> int(False)
 0
->>> int(Tue)
-Traceback (most recent call last):
-  File "<stdin>", line 1, in <module>
-NameError: name 'Tue' is not defined. Did you mean: 'True'?
 >>> int(True)
 1
 >>> bool(0)
@@ -248,6 +238,8 @@ True
 >>> a:int = 7.0
 >>> a
 7.0
+
+#Conversions
 >>> a=1
 >>> b = True
 >>> c = a+b
@@ -272,12 +264,16 @@ True
 <class 'float'>
 >>> type(d)
 <class 'float'>
+
+#Operators
 >>> 5**2
 25
 >>> 5//2
 2
 >>> 5%2
 1
+>>> (-9)**(1/2)
+(1.8369701987210297e-16+3j)
 >>> c=c*5
 >>> print(c)
 25.700000000000003
@@ -288,4 +284,22 @@ True
 128.5
 >>> a=a+10
 >>> a+=10
+>>> x=y
+>>> x=x+10
+>>> x+=10
+>>> x==y
+False
+>>> 0<=x<=10
+False
+>>> x
+30
+>>> x!=y
+True
+>>> x
+30
+>>> y
+10
+>>>
+
+
 >>>
